@@ -9,7 +9,9 @@ public class YujiroController : MonoBehaviour {
     private const int InputBufferSize = 10;
     private KeyCode[] inputBuffer = new KeyCode[InputBufferSize];
     private int inputIndex = 0;
+    private bool isFacingRight = true;
 
+    public Transform opponent;
     public float inputTimeout = 0.5f;
     public KeyCode[] punchKeys = {
         KeyCode.U,
@@ -94,8 +96,8 @@ public class YujiroController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        bool isMovingForwards = Input.GetKey(KeyCode.D);
-        bool isMovingBackwards = Input.GetKey(KeyCode.A);
+        bool isMovingForwards;
+        bool isMovingBackwards;
         bool isJumping = Input.GetKey(KeyCode.W);
         bool lightPunch = Input.GetKeyDown(KeyCode.U);
         bool mediumPunch = Input.GetKeyDown(KeyCode.I);
@@ -103,6 +105,19 @@ public class YujiroController : MonoBehaviour {
         bool lightKick = Input.GetKeyDown(KeyCode.J);
         bool mediumKick = Input.GetKeyDown(KeyCode.K);
         bool heavyKick = Input.GetKeyDown(KeyCode.L);
+        bool previousFacing = isFacingRight;
+
+        if (inputIndex == InputBufferSize) {
+            inputIndex = 0;
+        }
+
+        if (isFacingRight) {
+            isMovingForwards = Input.GetKey(KeyCode.D);
+            isMovingBackwards = Input.GetKey(KeyCode.A);
+        } else {
+            isMovingForwards = Input.GetKey(KeyCode.A);
+            isMovingBackwards = Input.GetKey(KeyCode.D);
+        }
 
         animator.SetBool("Forward pressed", isMovingForwards);
         animator.SetBool("Back pressed", isMovingBackwards);
@@ -115,117 +130,127 @@ public class YujiroController : MonoBehaviour {
         if (inputIndex < InputBufferSize) {
             if (Input.GetKeyDown(quarterCircleForwardLeft[inputIndex])) {
                 inputBuffer[inputIndex] = quarterCircleForwardLeft[inputIndex];
-                inputIndex ++;
+                inputIndex++;
                 lastInputTime = Time.time;
             }
 
             if (Input.GetKeyDown(quarterCircleForwardRight[inputIndex])) {
                 inputBuffer[inputIndex] = quarterCircleForwardRight[inputIndex];
-                inputIndex ++;
+                inputIndex++;
                 lastInputTime = Time.time;
             }
 
             if (Input.GetKeyDown(dragonPunchLeft[inputIndex])) {
                 inputBuffer[inputIndex] = dragonPunchLeft[inputIndex];
-                inputIndex ++;
+                inputIndex++;
                 lastInputTime = Time.time;
             }
             
             if (Input.GetKeyDown(dragonPunchRight[inputIndex])) {
                 inputBuffer[inputIndex] = dragonPunchRight[inputIndex];
-                inputIndex ++;
+                inputIndex++;
                 lastInputTime = Time.time;
             }
 
             if (Input.GetKeyDown(halfCircleBackLeft[inputIndex])) {
                 inputBuffer[inputIndex] = halfCircleBackLeft[inputIndex];
-                inputIndex ++;
+                inputIndex++;
                 lastInputTime = Time.time;
             }
 
             if (Input.GetKeyDown(halfCircleBackRight[inputIndex])) {
                 inputBuffer[inputIndex] = halfCircleBackRight[inputIndex];
-                inputIndex ++;
+                inputIndex++;
                 lastInputTime = Time.time;
             }
 
             if (Input.GetKeyDown(doubleQuarterCircleForwardLeft[inputIndex])) {
                 inputBuffer[inputIndex] = doubleQuarterCircleForwardLeft[inputIndex];
-                inputIndex ++;
+                inputIndex++;
                 lastInputTime = Time.time;
             }
 
             if (Input.GetKeyDown(doubleQuarterCircleForwardRight[inputIndex])) {
                 inputBuffer[inputIndex] = doubleQuarterCircleForwardRight[inputIndex];
-                inputIndex ++;
+                inputIndex++;
                 lastInputTime = Time.time;
             }
         }
 
-        if (ContainsQuarterCircleForwardLeft()) {
-            if (Array.Exists(kickKeys, key => Input.GetKeyDown(key))) {
-                TriggerOgreAxeKick();
+        if (isFacingRight) {
+            if (ContainsQuarterCircleForwardLeft()) {
+                if (Array.Exists(kickKeys, key => Input.GetKeyDown(key))) {
+                    TriggerOgreAxeKick();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                }
+
+                inputIndex = 0;
             }
 
-            inputIndex = 0;
-        }
+            if (ContainsDragonPunchLeft()) {
+                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
+                    TriggerOgreUppercut();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                }
 
-        if (ContainsQuarterCircleForwardRight()) {
-            if (Array.Exists(kickKeys, key => Input.GetKeyDown(key))) {
-                TriggerOgreAxeKick();
+                inputIndex = 0;
             }
 
-            inputIndex = 0;
-        }
+            if (ContainsHalfCircleBackLeft()) {
+                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
+                    TriggerOgreShaori();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                }
 
-        if (ContainsDragonPunchLeft()) {
-            if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                TriggerOgreUppercut();
+                inputIndex = 0;
             }
 
-            inputIndex = 0;
-        }
+            if (ContainsDoubleQuarterCircleForwardLeft()) {
+                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                }
 
-        if (ContainsDragonPunchRight()) {
-            if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                TriggerOgreUppercut();
+                inputIndex = 0;
+            }
+        } else {
+            if (ContainsQuarterCircleForwardRight()) {
+                if (Array.Exists(kickKeys, key => Input.GetKeyDown(key))) {
+                    TriggerOgreAxeKick();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                }
+
+                inputIndex = 0;
             }
 
-            inputIndex = 0;
-        }
+            if (ContainsDragonPunchRight()) {
+                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
+                    TriggerOgreUppercut();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                }
 
-        if (ContainsHalfCircleBackLeft()) {
-            if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                TriggerOgreShaori();
+                inputIndex = 0;
             }
 
-            inputIndex = 0;
-        }
+            if (ContainsHalfCircleBackRight()) {
+                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
+                    TriggerOgreShaori();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                }
 
-        if (ContainsHalfCircleBackRight()) {
-            if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                TriggerOgreShaori();
+                inputIndex = 0;
             }
 
-            inputIndex = 0;
-        }
+            if (ContainsDoubleQuarterCircleForwardRight()) {
+                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                }
 
-        if (ContainsDoubleQuarterCircleForwardLeft()) {
-            if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                TriggerHugOfDeath();
+                inputIndex = 0;
             }
-
-            inputIndex = 0;
         }
-        
-        if (ContainsDoubleQuarterCircleForwardRight()) {
-            if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                TriggerHugOfDeath();
-            }
-
-            inputIndex = 0;
-        }
-
+       
         if (lightPunch) {
             animator.SetTrigger("LightPunchTrigger");
         }
@@ -248,6 +273,12 @@ public class YujiroController : MonoBehaviour {
 
         if (heavyKick) {
             animator.SetTrigger("HeavyKickTrigger");
+        }
+
+        isFacingRight = IsFacingRight();
+
+        if (isFacingRight != previousFacing) {
+            FlipCharacter();
         }
     }
 
@@ -272,7 +303,7 @@ public class YujiroController : MonoBehaviour {
     }
 
     bool ContainsQuarterCircleForwardLeft() {
-        for (int i = 0; i <= inputBuffer.Length - quarterCircleForwardLeft.Length; i ++) {
+        for (int i = 0; i <= inputBuffer.Length - quarterCircleForwardLeft.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(quarterCircleForwardLeft.Length).ToArray();
 
             if (subsequence.SequenceEqual(quarterCircleForwardLeft)) {
@@ -284,7 +315,7 @@ public class YujiroController : MonoBehaviour {
     }
 
     bool ContainsQuarterCircleForwardRight() {
-        for (int i = 0; i <= inputBuffer.Length - quarterCircleForwardRight.Length; i ++) {
+        for (int i = 0; i <= inputBuffer.Length - quarterCircleForwardRight.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(quarterCircleForwardRight.Length).ToArray();
 
             if (subsequence.SequenceEqual(quarterCircleForwardRight)) {
@@ -296,7 +327,7 @@ public class YujiroController : MonoBehaviour {
     }
 
     bool ContainsDragonPunchLeft() {
-        for (int i = 0; i <= inputBuffer.Length - dragonPunchLeft.Length; i ++) {
+        for (int i = 0; i <= inputBuffer.Length - dragonPunchLeft.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(dragonPunchLeft.Length).ToArray();
 
             if (subsequence.SequenceEqual(dragonPunchLeft)) {
@@ -308,7 +339,7 @@ public class YujiroController : MonoBehaviour {
     }
 
     bool ContainsDragonPunchRight() {
-        for (int i = 0; i <= inputBuffer.Length - dragonPunchRight.Length; i ++) {
+        for (int i = 0; i <= inputBuffer.Length - dragonPunchRight.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(dragonPunchRight.Length).ToArray();
 
             if (subsequence.SequenceEqual(dragonPunchRight)) {
@@ -320,7 +351,7 @@ public class YujiroController : MonoBehaviour {
     }
 
     bool ContainsHalfCircleBackLeft() {
-        for (int i = 0; i <= inputBuffer.Length - halfCircleBackLeft.Length; i ++) {
+        for (int i = 0; i <= inputBuffer.Length - halfCircleBackLeft.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(halfCircleBackLeft.Length).ToArray();
 
             if (subsequence.SequenceEqual(halfCircleBackLeft)) {
@@ -332,7 +363,7 @@ public class YujiroController : MonoBehaviour {
     }
 
     bool ContainsHalfCircleBackRight() {
-        for (int i = 0; i <= inputBuffer.Length - halfCircleBackRight.Length; i ++) {
+        for (int i = 0; i <= inputBuffer.Length - halfCircleBackRight.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(halfCircleBackRight.Length).ToArray();
 
             if (subsequence.SequenceEqual(halfCircleBackRight)) {
@@ -344,7 +375,7 @@ public class YujiroController : MonoBehaviour {
     }
 
     bool ContainsDoubleQuarterCircleForwardLeft() {
-        for (int i = 0; i <= inputBuffer.Length - doubleQuarterCircleForwardLeft.Length; i ++) {
+        for (int i = 0; i <= inputBuffer.Length - doubleQuarterCircleForwardLeft.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(doubleQuarterCircleForwardLeft.Length).ToArray();
 
             if (subsequence.SequenceEqual(doubleQuarterCircleForwardLeft)) {
@@ -356,7 +387,7 @@ public class YujiroController : MonoBehaviour {
     }
 
     bool ContainsDoubleQuarterCircleForwardRight() {
-        for (int i = 0; i <= inputBuffer.Length - doubleQuarterCircleForwardRight.Length; i ++) {
+        for (int i = 0; i <= inputBuffer.Length - doubleQuarterCircleForwardRight.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(doubleQuarterCircleForwardRight.Length).ToArray();
 
             if (subsequence.SequenceEqual(doubleQuarterCircleForwardRight)) {
@@ -365,5 +396,14 @@ public class YujiroController : MonoBehaviour {
         }
 
         return false;
+    }
+
+    private bool IsFacingRight() {
+        float relativeXPosition = personaje.position.x - opponent.position.x;
+        return relativeXPosition >= 0;
+    }
+
+    private void FlipCharacter() {
+        personaje.Rotate(0, 180, 0);
     }
 }
