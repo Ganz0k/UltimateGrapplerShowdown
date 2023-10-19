@@ -5,165 +5,174 @@ using System.Linq;
 public class YujiroController : MonoBehaviour {
     
     private Animator animator;
-    private Transform personaje;
     private const int InputBufferSize = 10;
     private KeyCode[] inputBuffer = new KeyCode[InputBufferSize];
     private int inputIndex = 0;
     private bool isFacingRight = true;
+    private float inputTimeout = 1.5f;
+    private KeyCode[] lightAxeKickF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.J
+    };
+    private KeyCode[] mediumAxeKickF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.K
+    };
+    private KeyCode[] heavyAxeKickF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.L
+    };
+    private KeyCode[] lightAxeKickB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.J
+    };
+    private KeyCode[] mediumAxeKickB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.K
+    };
+    private KeyCode[] heavyAxeKickB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.L
+    };
+    private KeyCode[] lightUppercutF = {
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.U
+    };
+    private KeyCode[] mediumUppercutF = {
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.I
+    };
+    private KeyCode[] heavyUppercutF = {
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.O
+    };
+    private KeyCode[] lightUppercutB = {
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.U
+    };
+    private KeyCode[] mediumUppercutB = {
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.I
+    };
+    private KeyCode[] heavyUppercutB = {
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.O
+    };
+    private KeyCode[] lightShaoriF = {
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.U
+    };
+    private KeyCode[] mediumShaoriF = {
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.I
+    };
+    private KeyCode[] heavyShaoriF = {
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.O
+    };
+    private KeyCode[] lightShaoriB = {
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.U
+    };
+    private KeyCode[] mediumShaoriB = {
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.I
+    };
+    private KeyCode[] heavyShaoriB = {
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.O
+    };
+    private KeyCode[] lightHugOfDeathF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.U
+    };
+    private KeyCode[] mediumHugOfDeathF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.I
+    };
+    private KeyCode[] heavyHugOfDeathF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.O
+    };
+    private KeyCode[] lightHugOfDeathB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.U
+    };
+    private KeyCode[] mediumHugOfDeathB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.I
+    };
+    private KeyCode[] heavyHugOfDeathB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.O
+    };
+    private float lastInputTime;
 
     public Transform opponent;
-    public float inputTimeout = 1.5f;
-    public KeyCode[] lightAxeKickF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.J
-    };
-    public KeyCode[] mediumAxeKickF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.K
-    };
-    public KeyCode[] heavyAxeKickF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.L
-    };
-    public KeyCode[] lightAxeKickB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.J
-    };
-    public KeyCode[] mediumAxeKickB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.K
-    };
-    public KeyCode[] heavyAxeKickB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.L
-    };
-    public KeyCode[] lightUppercutF = {
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.U
-    };
-    public KeyCode[] mediumUppercutF = {
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.I
-    };
-    public KeyCode[] heavyUppercutF = {
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.O
-    };
-    public KeyCode[] lightUppercutB = {
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.U
-    };
-    public KeyCode[] mediumUppercutB = {
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.I
-    };
-    public KeyCode[] heavyUppercutB = {
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.O
-    };
-    public KeyCode[] lightShaoriF = {
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.U
-    };
-    public KeyCode[] mediumShaoriF = {
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.I
-    };
-    public KeyCode[] heavyShaoriF = {
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.O
-    };
-    public KeyCode[] lightShaoriB = {
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.U
-    };
-    public KeyCode[] mediumShaoriB = {
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.I
-    };
-    public KeyCode[] heavyShaoriB = {
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.O
-    };
-    public KeyCode[] lightHugOfDeathF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.U
-    };
-    public KeyCode[] mediumHugOfDeathF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.I
-    };
-    public KeyCode[] heavyHugOfDeathF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.O
-    };
-    public KeyCode[] lightHugOfDeathB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.U
-    };
-    public KeyCode[] mediumHugOfDeathB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.I
-    };
-    public KeyCode[] heavyHugOfDeathB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.O
-    };
-
-    private float lastInputTime;
+    public Transform personaje;
+    public Collider headHurtbox;
+    public Collider torsoHurtbox;
+    public Collider legsHurtbox;
+    public Collider leftElbowHitbox;
+    public Collider rightElbowHitbox;
+    public Collider leftFistHitbox;
+    public Collider rightFistHitbox;
+    public Collider leftKneeHitbox;
+    public Collider rightKneeHitbox;
+    public Collider leftFootHitbox;
+    public Collider rightFootHitbox;
 
     // Start is called before the first frame update
     void Start() {
         animator = GetComponent<Animator>();
-        personaje = GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -207,26 +216,26 @@ public class YujiroController : MonoBehaviour {
                 lastInputTime = Time.time;
             }
 
-            if (Input.GetKeyDown(KeyCode.D) && isFacingRight) {
-                inputBuffer[inputIndex] = KeyCode.D;
-                inputIndex++;
-                lastInputTime = Time.time;
-            }
-
-            if (Input.GetKeyDown(KeyCode.A) && !isFacingRight) {
+            if (isMovingBackwards && isFacingRight) {
                 inputBuffer[inputIndex] = KeyCode.A;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
 
-            if (Input.GetKeyDown(KeyCode.A) && isFacingRight) {
-                inputBuffer[inputIndex] = KeyCode.A;
+            if (isMovingForwards && isFacingRight) {
+                inputBuffer[inputIndex] = KeyCode.D;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
 
-            if (Input.GetKeyDown(KeyCode.D) && !isFacingRight) {
+            if (isMovingBackwards && !isFacingRight) {
                 inputBuffer[inputIndex] = KeyCode.D;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (isMovingForwards && !isFacingRight) {
+                inputBuffer[inputIndex] = KeyCode.A;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
@@ -275,145 +284,145 @@ public class YujiroController : MonoBehaviour {
         }
 
         if (isFacingRight) {
-            if (ContainsLightAxeKickF()) {
+            if (ContainsInput(lightAxeKickF)) {
                 TriggerOgreAxeKick();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsMediumAxeKickF()) {
+            if (ContainsInput(mediumAxeKickF)) {
                 TriggerOgreAxeKick();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsHeavyAxeKickF()) {
+            if (ContainsInput(heavyAxeKickF)) {
                 TriggerOgreAxeKick();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsLightUppercutF()) {
+            if (ContainsInput(lightUppercutF)) {
                 TriggerOgreUppercut();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsMediumUppercutF()) {
+            if (ContainsInput(mediumUppercutF)) {
                 TriggerOgreUppercut();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsHeavyUppercutF()) {
+            if (ContainsInput(heavyUppercutF)) {
                 TriggerOgreUppercut();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsLightShaoriF()) {
+            if (ContainsInput(lightShaoriF)) {
                 TriggerOgreShaori();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsMediumShaoriF()) {
+            if (ContainsInput(mediumShaoriF)) {
                 TriggerOgreShaori();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsHeavyShaoriF()) {
+            if (ContainsInput(heavyShaoriF)) {
                 TriggerOgreShaori();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsLightHugOfDeathF()) {
+            if (ContainsInput(lightHugOfDeathF)) {
                 TriggerHugOfDeath();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsMediumHugOfDeathF()) {
+            if (ContainsInput(mediumHugOfDeathF)) {
                 TriggerHugOfDeath();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsHeavyHugOfDeathF()) {
+            if (ContainsInput(heavyHugOfDeathF)) {
                 TriggerHugOfDeath();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
         } else {
-            if (ContainsLightAxeKickB()) {
+            if (ContainsInput(lightAxeKickB)) {
                 TriggerOgreAxeKick();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsMediumAxeKickB()) {
+            if (ContainsInput(mediumAxeKickB)) {
                 TriggerOgreAxeKick();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsHeavyAxeKickB()) {
+            if (ContainsInput(heavyAxeKickB)) {
                 TriggerOgreAxeKick();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsLightUppercutB()) {
+            if (ContainsInput(lightUppercutB)) {
                 TriggerOgreUppercut();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsMediumUppercutB()) {
+            if (ContainsInput(mediumUppercutB)) {
                 TriggerOgreUppercut();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsHeavyUppercutB()) {
+            if (ContainsInput(heavyUppercutB)) {
                 TriggerOgreUppercut();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsLightShaoriB()) {
+            if (ContainsInput(lightShaoriB)) {
                 TriggerOgreShaori();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsMediumShaoriB()) {
+            if (ContainsInput(mediumShaoriB)) {
                 TriggerOgreShaori();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsHeavyShaoriB()) {
+            if (ContainsInput(heavyShaoriB)) {
                 TriggerOgreShaori();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsLightHugOfDeathB()) {
+            if (ContainsInput(lightHugOfDeathB)) {
                 TriggerHugOfDeath();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsMediumHugOfDeathB()) {
+            if (ContainsInput(mediumHugOfDeathB)) {
                 TriggerHugOfDeath();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsHeavyHugOfDeathB()) {
+            if (ContainsInput(heavyHugOfDeathB)) {
                 TriggerHugOfDeath();
                 inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
@@ -471,289 +480,13 @@ public class YujiroController : MonoBehaviour {
         animator.SetTrigger("HugOfDeathFollowupTrigger");
     }
 
-    bool ContainsLightAxeKickF() {
-        for (int i = 0; i <= inputBuffer.Length - lightAxeKickF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(lightAxeKickF.Length).ToArray();
+    bool ContainsInput(KeyCode[] input) {
+        for (int i = 0; i <= inputBuffer.Length - input.Length; i++) {
+            KeyCode[] subsequence = inputBuffer.Skip(i).Take(input.Length).ToArray();
 
-            if (subsequence.SequenceEqual(lightAxeKickF)) {
+            if (subsequence.SequenceEqual(input)) {
                 return true;
             }
-        }
-
-        return false;
-    }
-    
-    bool ContainsMediumAxeKickF() {
-        for (int i = 0; i <= inputBuffer.Length - mediumAxeKickF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(mediumAxeKickF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(mediumAxeKickF)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsHeavyAxeKickF() {
-        for (int i = 0; i <= inputBuffer.Length - heavyAxeKickF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(heavyAxeKickF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(heavyAxeKickF)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsLightAxeKickB() {
-        for (int i = 0; i <= inputBuffer.Length - lightAxeKickB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(lightAxeKickB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(lightAxeKickB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-    
-    bool ContainsMediumAxeKickB() {
-        for (int i = 0; i <= inputBuffer.Length - mediumAxeKickB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(mediumAxeKickB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(mediumAxeKickB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsHeavyAxeKickB() {
-        for (int i = 0; i <= inputBuffer.Length - heavyAxeKickB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(heavyAxeKickB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(heavyAxeKickB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsLightUppercutF() {
-        for (int i = 0; i <= inputBuffer.Length - lightUppercutF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(lightUppercutF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(lightUppercutF)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsMediumUppercutF() {
-        for (int i = 0; i <= inputBuffer.Length - mediumUppercutF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(mediumUppercutF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(mediumUppercutF)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsHeavyUppercutF() {
-        for (int i = 0; i <= inputBuffer.Length - heavyUppercutF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(heavyUppercutF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(heavyUppercutF)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsLightUppercutB() {
-        for (int i = 0; i <= inputBuffer.Length - lightUppercutB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(lightUppercutB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(lightUppercutB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsMediumUppercutB() {
-        for (int i = 0; i <= inputBuffer.Length - mediumUppercutB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(mediumUppercutB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(mediumUppercutB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsHeavyUppercutB() {
-        for (int i = 0; i <= inputBuffer.Length - heavyUppercutB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(heavyUppercutB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(heavyUppercutB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsLightShaoriF() {
-        for (int i = 0; i <= inputBuffer.Length - lightShaoriF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(lightShaoriF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(lightShaoriF)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
-    bool ContainsMediumShaoriF() {
-        for (int i = 0; i <= inputBuffer.Length - mediumShaoriF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(mediumShaoriF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(mediumShaoriF)) {
-                return true;
-            } 
-        }
-
-        return false;
-    }
-
-    bool ContainsHeavyShaoriF() {
-        for (int i = 0; i <= inputBuffer.Length - heavyShaoriF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(heavyShaoriF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(heavyShaoriF)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsLightShaoriB() {
-        for (int i = 0; i <= inputBuffer.Length - lightShaoriB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(lightShaoriB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(lightShaoriB)) {
-                return true;
-            }  
-        }
-
-        return false;
-    }
-
-    bool ContainsMediumShaoriB() {
-        for (int i = 0; i <= inputBuffer.Length - mediumShaoriB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(mediumShaoriB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(mediumShaoriB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsHeavyShaoriB() {
-        for (int i = 0; i <= inputBuffer.Length - heavyShaoriB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(heavyShaoriB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(heavyShaoriB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsLightHugOfDeathF() {
-        for (int i = 0; i <= inputBuffer.Length - lightHugOfDeathF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(lightHugOfDeathF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(lightHugOfDeathF)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsMediumHugOfDeathF() {
-        for (int i = 0; i <= inputBuffer.Length - mediumHugOfDeathF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(mediumHugOfDeathF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(mediumHugOfDeathF)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsHeavyHugOfDeathF() {
-        for (int i = 0; i <= inputBuffer.Length - heavyHugOfDeathF.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(heavyHugOfDeathF.Length).ToArray();
-
-            if (subsequence.SequenceEqual(heavyHugOfDeathF)) {
-                return true;
-            } 
-        }
-
-        return false;
-    }
-
-    bool ContainsLightHugOfDeathB() {
-        for (int i = 0; i <= inputBuffer.Length - lightHugOfDeathB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(lightHugOfDeathB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(lightHugOfDeathB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsMediumHugOfDeathB() {
-        for (int i = 0; i <= inputBuffer.Length - mediumHugOfDeathB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(mediumHugOfDeathB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(mediumHugOfDeathB)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsHeavyHugOfDeathB() {
-        for (int i = 0; i <= inputBuffer.Length - heavyHugOfDeathB.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(heavyHugOfDeathB.Length).ToArray();
-
-            if (subsequence.SequenceEqual(heavyHugOfDeathB)) {
-                return true;
-            } 
         }
 
         return false;
@@ -766,5 +499,9 @@ public class YujiroController : MonoBehaviour {
 
     private void FlipCharacter() {
         personaje.Rotate(0, 180, 0);
+    }
+    
+    private void OnTriggerEnter(Collider other) {
+        
     }
 }

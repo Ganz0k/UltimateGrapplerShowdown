@@ -5,67 +5,135 @@ using System.Linq;
 public class BakiController : MonoBehaviour {
     
     private Animator animator;
-    private Transform personaje;
     private const int InputBufferSize = 10;
     private KeyCode[] inputBuffer = new KeyCode[InputBufferSize];
     private int inputIndex = 0;
     private bool isFacingLeft = true;
-
-    public Transform opponent;
-    public float inputTimeout = 0.5f;
-    public KeyCode[] punchKeys = {
-        KeyCode.U,
-        KeyCode.I,
-        KeyCode.O
+    private float inputTimeout = 0.5f;
+    private KeyCode[] lightCockroachDashF = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.J
     };
-    public KeyCode[] kickKeys = {
-        KeyCode.J,
-        KeyCode.K,
+    private KeyCode[] mediumCockroachDashF = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.K
+    };
+    private KeyCode[] heavyCockroachDashF = {
+        KeyCode.S,
+        KeyCode.A,
         KeyCode.L
     };
-    public KeyCode[] quarterCircleBackLeft = { //Same as quarterCircleForwardRight
-        KeyCode.S,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.A
-    };
-    public KeyCode[] quarterCircleBackRight = { //Same as quarterCircleForwardLeft
-        KeyCode.S,
+    private KeyCode[] lightCockroachDashB = {
         KeyCode.S,
         KeyCode.D,
-        KeyCode.D
+        KeyCode.J
     };
-    public KeyCode[] downDown = {
-        KeyCode.S,
-        KeyCode.S
-    };
-    public KeyCode[] doubleQuarterCircleForwardLeft = {
-        KeyCode.S,
+    private KeyCode[] mediumCockroachDashB = {
         KeyCode.S,
         KeyCode.D,
+        KeyCode.K
+    };
+    private KeyCode[] heavyCockroachDashB = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.L
+    };
+    private KeyCode[] lightWhipStrikeF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.U
+    };
+    private KeyCode[] mediumWhipStrikeF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.I
+    };
+    private KeyCode[] heavyWhipStrikeF = {
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.O
+    };
+    private KeyCode[] lightWhipStrikeB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.U
+    };
+    private KeyCode[] mediumWhipStrikeB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.I
+    };
+    private KeyCode[] heavyWhipStrikeB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.O
+    };
+    private KeyCode[] lightDemonBack = {
+        KeyCode.S,
+        KeyCode.S,
+        KeyCode.U
+    };
+    private KeyCode[] mediumDemonBack = {
+        KeyCode.S,
+        KeyCode.S,
+        KeyCode.I
+    };
+    private KeyCode[] heavyDemonBack = {
+        KeyCode.S,
+        KeyCode.S,
+        KeyCode.O
+    };
+    private KeyCode[] lightTriceratopsF = {
+        KeyCode.S,
         KeyCode.D,
         KeyCode.S,
+        KeyCode.D,
+        KeyCode.U
+    };
+    private KeyCode[] mediumTriceratopsF = {
         KeyCode.S,
         KeyCode.D,
-        KeyCode.D
+        KeyCode.S,
+        KeyCode.D,
+        KeyCode.I
     };
-    public KeyCode[] doubleQuarterCircleForwardRight = {
+    private KeyCode[] heavyTriceratopsF = {
         KeyCode.S,
+        KeyCode.D,
         KeyCode.S,
-        KeyCode.A,
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.A
+        KeyCode.D,
+        KeyCode.O
     };
-
+    private KeyCode[] lightTriceratopsB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.U
+    };
+    private KeyCode[] mediumTriceratopsB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.I
+    };
+    private KeyCode[] heavyTriceratopsB = {
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.S,
+        KeyCode.A,
+        KeyCode.O
+    };
     private float lastInputTime;
+    public Transform opponent;
+    public Transform personaje;
     
     // Start is called before the first frame update
     void Start() {
         animator = GetComponent<Animator>();
-        personaje = GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -73,6 +141,7 @@ public class BakiController : MonoBehaviour {
         bool isMovingForwards;
         bool isMovingBackwards;
         bool isJumping = Input.GetKey(KeyCode.W);
+        bool down = Input.GetKeyDown(KeyCode.S);
         bool lightPunch = Input.GetKeyDown(KeyCode.U);
         bool mediumPunch = Input.GetKeyDown(KeyCode.I);
         bool heavyPunch = Input.GetKeyDown(KeyCode.O);
@@ -102,98 +171,204 @@ public class BakiController : MonoBehaviour {
         }
 
         if (inputIndex < InputBufferSize) {
-            if (Input.GetKeyDown(quarterCircleBackLeft[inputIndex])) {
-                inputBuffer[inputIndex] = quarterCircleBackLeft[inputIndex];
-                inputIndex++;
-                lastInputTime = Time.time;
-            }
-            
-            if (Input.GetKeyDown(quarterCircleBackRight[inputIndex])) {
-                inputBuffer[inputIndex] = quarterCircleBackLeft[inputIndex];
+            if (isJumping) {
+                inputBuffer[inputIndex] = KeyCode.W;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
 
-            if (Input.GetKeyDown(downDown[inputIndex])) {
-                inputBuffer[inputIndex] = downDown[inputIndex];
-                inputIndex++;
-            }
-
-            if (Input.GetKeyDown(doubleQuarterCircleForwardLeft[inputIndex])) {
-                inputBuffer[inputIndex] = doubleQuarterCircleForwardLeft[inputIndex];
+            if (isMovingBackwards && isFacingLeft) {
+                inputBuffer[inputIndex] = KeyCode.D;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
 
-            if (Input.GetKeyDown(doubleQuarterCircleForwardRight[inputIndex])) {
-                inputBuffer[inputIndex] = doubleQuarterCircleForwardRight[inputIndex];
+            if (isMovingForwards && isFacingLeft) {
+                inputBuffer[inputIndex] = KeyCode.A;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (isMovingBackwards && !isFacingLeft) {
+                inputBuffer[inputIndex] = KeyCode.A;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (isMovingForwards && !isFacingLeft) {
+                inputBuffer[inputIndex] = KeyCode.D;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (down) {
+                inputBuffer[inputIndex] = KeyCode.S;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (lightPunch) {
+                inputBuffer[inputIndex] = KeyCode.U;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (mediumPunch) {
+                inputBuffer[inputIndex] = KeyCode.I;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (heavyPunch) {
+                inputBuffer[inputIndex] = KeyCode.O;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (lightKick) {
+                inputBuffer[inputIndex] = KeyCode.J;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (mediumKick) {
+                inputBuffer[inputIndex] = KeyCode.K;
+                inputIndex++;
+                lastInputTime = Time.time;
+            }
+
+            if (heavyKick) {
+                inputBuffer[inputIndex] = KeyCode.L;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
         }
 
         if (isFacingLeft) {
-            if (ContainsQuarterCircleBackRight()) {
-                if (Array.Exists(kickKeys, key => Input.GetKeyDown(key))) {
-                    TriggerCockroachDash();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                }
-
+            if (ContainsInput(lightCockroachDashB)) {
+                TriggerCockroachDash();
+                inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsQuarterCircleBackLeft()) {
-                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                    TriggerWhipStrike();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                }
-
+            if (ContainsInput(mediumCockroachDashB)) {
+                TriggerCockroachDash();
+                inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsDoubleQuarterCircleForwardRight()) {
-                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                    TriggerTriceratopsFist();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                }
+            if (ContainsInput(heavyCockroachDashB)) {
+                TriggerCockroachDash();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
 
+            if (ContainsInput(lightWhipStrikeB)) {
+                TriggerWhipStrike();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(mediumWhipStrikeB)) {
+                TriggerWhipStrike();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(heavyWhipStrikeB)) {
+                TriggerWhipStrike();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(lightTriceratopsB)) {
+                TriggerTriceratopsFist();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(mediumTriceratopsB)) {
+                TriggerTriceratopsFist();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(heavyTriceratopsB)) {
+                TriggerTriceratopsFist();
+                inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
         } else {
-            if (ContainsQuarterCircleBackLeft()) {
-                if (Array.Exists(kickKeys, key => Input.GetKeyDown(key))) {
-                    TriggerCockroachDash();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                }
-
+            if (ContainsInput(lightCockroachDashF)) {
+                TriggerCockroachDash();
+                inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsQuarterCircleBackRight()) {
-                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                    TriggerWhipStrike();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                }
-
+            if (ContainsInput(mediumCockroachDashF)) {
+                TriggerCockroachDash();
+                inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
 
-            if (ContainsDoubleQuarterCircleForwardLeft()) {
-                if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                    TriggerTriceratopsFist();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                }
+            if (ContainsInput(heavyCockroachDashF)) {
+                TriggerCockroachDash();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
 
+            if (ContainsInput(lightWhipStrikeF)) {
+                TriggerWhipStrike();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(mediumWhipStrikeF)) {
+                TriggerWhipStrike();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(heavyWhipStrikeF)) {
+                TriggerWhipStrike();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(lightTriceratopsF)) {
+                TriggerTriceratopsFist();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(mediumTriceratopsF)) {
+                TriggerTriceratopsFist();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(heavyTriceratopsF)) {
+                TriggerTriceratopsFist();
+                inputBuffer = new KeyCode[InputBufferSize];
                 inputIndex = 0;
             }
         }
         
-        if (ContainsDownDown()) {
-            if (Array.Exists(punchKeys, key => Input.GetKeyDown(key))) {
-                TriggerDemonBack();
-                inputBuffer = new KeyCode[InputBufferSize];
-            }
+        if (ContainsInput(lightDemonBack)) {
+            TriggerDemonBack();
+            inputBuffer = new KeyCode[InputBufferSize];
+            inputIndex = 0;
+        }
 
+        if (ContainsInput(mediumDemonBack)) {
+            TriggerDemonBack();
+            inputBuffer = new KeyCode[InputBufferSize];
+            inputIndex = 0;
+        }
+
+        if (ContainsInput(heavyDemonBack)) {
+            TriggerDemonBack();
+            inputBuffer = new KeyCode[InputBufferSize];
             inputIndex = 0;
         }
 
@@ -248,59 +423,11 @@ public class BakiController : MonoBehaviour {
         animator.SetTrigger("TriceratopsFistFollowupTrigger");
     }
 
-    bool ContainsQuarterCircleBackLeft() {
-        for (int i = 0; i <= inputBuffer.Length - quarterCircleBackLeft.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(quarterCircleBackLeft.Length).ToArray();
+    bool ContainsInput(KeyCode[] input) {
+        for (int i = 0; i <= inputBuffer.Length - input.Length; i++) {
+            KeyCode[] subsequence = inputBuffer.Skip(i).Take(input.Length).ToArray();
 
-            if (subsequence.SequenceEqual(quarterCircleBackLeft)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsQuarterCircleBackRight() {
-        for (int i = 0; i <= inputBuffer.Length - quarterCircleBackRight.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(quarterCircleBackRight.Length).ToArray();
-
-            if (subsequence.SequenceEqual(quarterCircleBackRight)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsDownDown() {
-        for (int i = 0; i <= inputBuffer.Length - downDown.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(downDown.Length).ToArray();
-
-            if (subsequence.SequenceEqual(downDown)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsDoubleQuarterCircleForwardLeft() {
-        for (int i = 0; i <= inputBuffer.Length - doubleQuarterCircleForwardLeft.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(doubleQuarterCircleForwardLeft.Length).ToArray();
-
-            if (subsequence.SequenceEqual(doubleQuarterCircleForwardLeft)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool ContainsDoubleQuarterCircleForwardRight() {
-        for (int i = 0; i <= inputBuffer.Length - doubleQuarterCircleForwardRight.Length; i++) {
-            KeyCode[] subsequence = inputBuffer.Skip(i).Take(doubleQuarterCircleForwardRight.Length).ToArray();
-
-            if (subsequence.SequenceEqual(doubleQuarterCircleForwardRight)) {
+            if (subsequence.SequenceEqual(input)) {
                 return true;
             }
         }
@@ -315,5 +442,9 @@ public class BakiController : MonoBehaviour {
 
     private void FlipCharacter() {
         personaje.Rotate(0, 180, 0);
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        
     }
 }
