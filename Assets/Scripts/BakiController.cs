@@ -4,7 +4,7 @@ using System.Linq;
 
 public class BakiController : MonoBehaviour {
     
-    private Animator animator;
+    public Animator animator;
     private const int InputBufferSize = 10;
     private KeyCode[] inputBuffer = new KeyCode[InputBufferSize];
     private int inputIndex = 0;
@@ -128,12 +128,21 @@ public class BakiController : MonoBehaviour {
         KeyCode.O
     };
     private float lastInputTime;
+
     public Transform opponent;
     public Transform personaje;
+    public Collider opponentLeftElbowHitbox;
+    public Collider opponentRightElbowHitbox;
+    public Collider opponentLeftFistHitbox;
+    public Collider opponentRightFistHitbox;
+    public Collider opponentLeftKneeHitbox;
+    public Collider opponentRightKneeHitbox;
+    public Collider opponentLeftFootHitbox;
+    public Collider opponentRightFootHitbox;
     
     // Start is called before the first frame update
     void Start() {
-        animator = GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame
@@ -171,32 +180,20 @@ public class BakiController : MonoBehaviour {
         }
 
         if (inputIndex < InputBufferSize) {
-            if (isJumping) {
+            if (Input.GetKeyDown(KeyCode.U)) {
                 inputBuffer[inputIndex] = KeyCode.W;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
 
-            if (isMovingBackwards && isFacingLeft) {
+            if (Input.GetKeyDown(KeyCode.D)) {
                 inputBuffer[inputIndex] = KeyCode.D;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
 
-            if (isMovingForwards && isFacingLeft) {
+            if (Input.GetKeyDown(KeyCode.A)) {
                 inputBuffer[inputIndex] = KeyCode.A;
-                inputIndex++;
-                lastInputTime = Time.time;
-            }
-
-            if (isMovingBackwards && !isFacingLeft) {
-                inputBuffer[inputIndex] = KeyCode.A;
-                inputIndex++;
-                lastInputTime = Time.time;
-            }
-
-            if (isMovingForwards && !isFacingLeft) {
-                inputBuffer[inputIndex] = KeyCode.D;
                 inputIndex++;
                 lastInputTime = Time.time;
             }
@@ -423,6 +420,18 @@ public class BakiController : MonoBehaviour {
         animator.SetTrigger("TriceratopsFistFollowupTrigger");
     }
 
+    void TriggerHurt() {
+        animator.SetTrigger("HurtTrigger");
+    }
+
+    void TriggerKnockdown() {
+        animator.SetTrigger("KnockdownTrigger");
+    }
+
+    void TriggerBlock() {
+        animator.SetTrigger("BlockTrigger");
+    }
+
     bool ContainsInput(KeyCode[] input) {
         for (int i = 0; i <= inputBuffer.Length - input.Length; i++) {
             KeyCode[] subsequence = inputBuffer.Skip(i).Take(input.Length).ToArray();
@@ -445,6 +454,21 @@ public class BakiController : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        
+        Animator opponentAnimator = opponent.GetComponent<Animator>();
+        AnimatorStateInfo currentOpponentState = opponentAnimator.GetCurrentAnimatorStateInfo(0);
+
+        if (other == opponentLeftElbowHitbox || other == opponentLeftFistHitbox ||
+            other == opponentRightElbowHitbox || other == opponentRightFistHitbox || other == opponentLeftKneeHitbox ||
+            other == opponentLeftFootHitbox || other == opponentRightKneeHitbox || other == opponentRightFootHitbox) {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk backwards")) {
+                TriggerBlock();
+            } else if (currentOpponentState.IsName("Ogre axe kick") || currentOpponentState.IsName("Ogre uppercut") || currentOpponentState.IsName("Ogre shaori followup")) {
+                TriggerKnockdown();
+            } else if (currentOpponentState.IsName("Light punch") || currentOpponentState.IsName("Medium punch") ||
+                currentOpponentState.IsName("Heavy punch") || currentOpponentState.IsName("Light kick") ||
+                currentOpponentState.IsName("Medium kick") || currentOpponentState.IsName("Heavy kick")) {
+                TriggerHurt();
+            }
+        }
     }
 }
