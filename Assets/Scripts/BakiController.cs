@@ -147,256 +147,258 @@ public class BakiController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        bool isMovingForwards;
-        bool isMovingBackwards;
-        bool isJumping = Input.GetKey(KeyCode.W);
-        bool down = Input.GetKeyDown(KeyCode.S);
-        bool lightPunch = Input.GetKeyDown(KeyCode.U);
-        bool mediumPunch = Input.GetKeyDown(KeyCode.I);
-        bool heavyPunch = Input.GetKeyDown(KeyCode.O);
-        bool lightKick = Input.GetKeyDown(KeyCode.J);
-        bool mediumKick = Input.GetKeyDown(KeyCode.K);
-        bool heavyKick = Input.GetKeyDown(KeyCode.L);
-        bool previousFacing = isFacingLeft;
+        if (!MenuPausa.isPaused) {
+            bool isMovingForwards;
+            bool isMovingBackwards;
+            bool isJumping = Input.GetKey(KeyCode.W);
+            bool down = Input.GetKeyDown(KeyCode.S);
+            bool lightPunch = Input.GetKeyDown(KeyCode.U);
+            bool mediumPunch = Input.GetKeyDown(KeyCode.I);
+            bool heavyPunch = Input.GetKeyDown(KeyCode.O);
+            bool lightKick = Input.GetKeyDown(KeyCode.J);
+            bool mediumKick = Input.GetKeyDown(KeyCode.K);
+            bool heavyKick = Input.GetKeyDown(KeyCode.L);
+            bool previousFacing = isFacingLeft;
 
-        if (inputIndex == InputBufferSize) {
-            inputIndex = 0;
-        }
-
-        if (isFacingLeft) {
-            isMovingForwards = Input.GetKey(KeyCode.A);
-            isMovingBackwards = Input.GetKey(KeyCode.D);
-        } else {
-            isMovingForwards = Input.GetKey(KeyCode.D);
-            isMovingBackwards = Input.GetKey(KeyCode.A);
-        }
-
-        animator.SetBool("Forward pressed", isMovingForwards);
-        animator.SetBool("Back pressed", isMovingBackwards);
-        animator.SetBool("Up pressed", isJumping);
-
-        if (Time.time - lastInputTime > inputTimeout) {
-            inputIndex = 0;
-        }
-
-        if (inputIndex < InputBufferSize) {
-            if (Input.GetKeyDown(KeyCode.U)) {
-                inputBuffer[inputIndex] = KeyCode.W;
-                inputIndex++;
-                lastInputTime = Time.time;
+            if (inputIndex == InputBufferSize) {
+                inputIndex = 0;
             }
 
-            if (Input.GetKeyDown(KeyCode.D)) {
-                inputBuffer[inputIndex] = KeyCode.D;
-                inputIndex++;
-                lastInputTime = Time.time;
+            if (isFacingLeft) {
+                isMovingForwards = Input.GetKey(KeyCode.A);
+                isMovingBackwards = Input.GetKey(KeyCode.D);
+            } else {
+                isMovingForwards = Input.GetKey(KeyCode.D);
+                isMovingBackwards = Input.GetKey(KeyCode.A);
             }
 
-            if (Input.GetKeyDown(KeyCode.A)) {
-                inputBuffer[inputIndex] = KeyCode.A;
-                inputIndex++;
-                lastInputTime = Time.time;
+            animator.SetBool("Forward pressed", isMovingForwards);
+            animator.SetBool("Back pressed", isMovingBackwards);
+            animator.SetBool("Up pressed", isJumping);
+
+            if (Time.time - lastInputTime > inputTimeout) {
+                inputIndex = 0;
             }
 
-            if (down) {
-                inputBuffer[inputIndex] = KeyCode.S;
-                inputIndex++;
-                lastInputTime = Time.time;
+            if (inputIndex < InputBufferSize) {
+                if (Input.GetKeyDown(KeyCode.U)) {
+                    inputBuffer[inputIndex] = KeyCode.W;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (Input.GetKeyDown(KeyCode.D)) {
+                    inputBuffer[inputIndex] = KeyCode.D;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (Input.GetKeyDown(KeyCode.A)) {
+                    inputBuffer[inputIndex] = KeyCode.A;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (down) {
+                    inputBuffer[inputIndex] = KeyCode.S;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (lightPunch) {
+                    inputBuffer[inputIndex] = KeyCode.U;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (mediumPunch) {
+                    inputBuffer[inputIndex] = KeyCode.I;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (heavyPunch) {
+                    inputBuffer[inputIndex] = KeyCode.O;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (lightKick) {
+                    inputBuffer[inputIndex] = KeyCode.J;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (mediumKick) {
+                    inputBuffer[inputIndex] = KeyCode.K;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+
+                if (heavyKick) {
+                    inputBuffer[inputIndex] = KeyCode.L;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+            }
+
+            if (isFacingLeft) {
+                if (ContainsInput(lightCockroachDashB)) {
+                    TriggerCockroachDash();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(mediumCockroachDashB)) {
+                    TriggerCockroachDash();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(heavyCockroachDashB)) {
+                    TriggerCockroachDash();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(lightWhipStrikeB)) {
+                    TriggerWhipStrike();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(mediumWhipStrikeB)) {
+                    TriggerWhipStrike();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(heavyWhipStrikeB)) {
+                    TriggerWhipStrike();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(lightTriceratopsB)) {
+                    TriggerTriceratopsFist();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(mediumTriceratopsB)) {
+                    TriggerTriceratopsFist();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(heavyTriceratopsB)) {
+                    TriggerTriceratopsFist();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+            } else {
+                if (ContainsInput(lightCockroachDashF)) {
+                    TriggerCockroachDash();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(mediumCockroachDashF)) {
+                    TriggerCockroachDash();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(heavyCockroachDashF)) {
+                    TriggerCockroachDash();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(lightWhipStrikeF)) {
+                    TriggerWhipStrike();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(mediumWhipStrikeF)) {
+                    TriggerWhipStrike();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(heavyWhipStrikeF)) {
+                    TriggerWhipStrike();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(lightTriceratopsF)) {
+                    TriggerTriceratopsFist();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(mediumTriceratopsF)) {
+                    TriggerTriceratopsFist();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(heavyTriceratopsF)) {
+                    TriggerTriceratopsFist();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+            }
+        
+            if (ContainsInput(lightDemonBack)) {
+                TriggerDemonBack();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(mediumDemonBack)) {
+                TriggerDemonBack();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
+            }
+
+            if (ContainsInput(heavyDemonBack)) {
+                TriggerDemonBack();
+                inputBuffer = new KeyCode[InputBufferSize];
+                inputIndex = 0;
             }
 
             if (lightPunch) {
-                inputBuffer[inputIndex] = KeyCode.U;
-                inputIndex++;
-                lastInputTime = Time.time;
+                animator.SetTrigger("LightPunchTrigger");
             }
 
             if (mediumPunch) {
-                inputBuffer[inputIndex] = KeyCode.I;
-                inputIndex++;
-                lastInputTime = Time.time;
+                animator.SetTrigger("MediumPunchTrigger");
             }
 
             if (heavyPunch) {
-                inputBuffer[inputIndex] = KeyCode.O;
-                inputIndex++;
-                lastInputTime = Time.time;
+                animator.SetTrigger("HeavyPunchTrigger");
             }
 
             if (lightKick) {
-                inputBuffer[inputIndex] = KeyCode.J;
-                inputIndex++;
-                lastInputTime = Time.time;
+                animator.SetTrigger("LightKickTrigger");
             }
 
             if (mediumKick) {
-                inputBuffer[inputIndex] = KeyCode.K;
-                inputIndex++;
-                lastInputTime = Time.time;
+                animator.SetTrigger("MediumKickTrigger");
             }
 
             if (heavyKick) {
-                inputBuffer[inputIndex] = KeyCode.L;
-                inputIndex++;
-                lastInputTime = Time.time;
-            }
-        }
-
-        if (isFacingLeft) {
-            if (ContainsInput(lightCockroachDashB)) {
-                TriggerCockroachDash();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
+                animator.SetTrigger("HeavyKickTrigger");
             }
 
-            if (ContainsInput(mediumCockroachDashB)) {
-                TriggerCockroachDash();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
+            isFacingLeft = IsFacingLeft();
+
+            if (isFacingLeft != previousFacing) {
+                FlipCharacter();
             }
-
-            if (ContainsInput(heavyCockroachDashB)) {
-                TriggerCockroachDash();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(lightWhipStrikeB)) {
-                TriggerWhipStrike();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(mediumWhipStrikeB)) {
-                TriggerWhipStrike();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(heavyWhipStrikeB)) {
-                TriggerWhipStrike();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(lightTriceratopsB)) {
-                TriggerTriceratopsFist();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(mediumTriceratopsB)) {
-                TriggerTriceratopsFist();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(heavyTriceratopsB)) {
-                TriggerTriceratopsFist();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-        } else {
-            if (ContainsInput(lightCockroachDashF)) {
-                TriggerCockroachDash();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(mediumCockroachDashF)) {
-                TriggerCockroachDash();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(heavyCockroachDashF)) {
-                TriggerCockroachDash();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(lightWhipStrikeF)) {
-                TriggerWhipStrike();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(mediumWhipStrikeF)) {
-                TriggerWhipStrike();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(heavyWhipStrikeF)) {
-                TriggerWhipStrike();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(lightTriceratopsF)) {
-                TriggerTriceratopsFist();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(mediumTriceratopsF)) {
-                TriggerTriceratopsFist();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-
-            if (ContainsInput(heavyTriceratopsF)) {
-                TriggerTriceratopsFist();
-                inputBuffer = new KeyCode[InputBufferSize];
-                inputIndex = 0;
-            }
-        }
-        
-        if (ContainsInput(lightDemonBack)) {
-            TriggerDemonBack();
-            inputBuffer = new KeyCode[InputBufferSize];
-            inputIndex = 0;
-        }
-
-        if (ContainsInput(mediumDemonBack)) {
-            TriggerDemonBack();
-            inputBuffer = new KeyCode[InputBufferSize];
-            inputIndex = 0;
-        }
-
-        if (ContainsInput(heavyDemonBack)) {
-            TriggerDemonBack();
-            inputBuffer = new KeyCode[InputBufferSize];
-            inputIndex = 0;
-        }
-
-        if (lightPunch) {
-            animator.SetTrigger("LightPunchTrigger");
-        }
-
-        if (mediumPunch) {
-            animator.SetTrigger("MediumPunchTrigger");
-        }
-
-        if (heavyPunch) {
-            animator.SetTrigger("HeavyPunchTrigger");
-        }
-
-        if (lightKick) {
-            animator.SetTrigger("LightKickTrigger");
-        }
-
-        if (mediumKick) {
-            animator.SetTrigger("MediumKickTrigger");
-        }
-
-        if (heavyKick) {
-            animator.SetTrigger("HeavyKickTrigger");
-        }
-
-        isFacingLeft = IsFacingLeft();
-
-        if (isFacingLeft != previousFacing) {
-            FlipCharacter();
         }
     }
 
