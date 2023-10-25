@@ -175,275 +175,281 @@ public class YujiroController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        // bool isMovingForwards;
-        // bool isMovingBackwards;
-        // bool isJumping = Input.GetKey(KeyCode.W);
-        // bool lightPunch = Input.GetKeyDown(KeyCode.U);
-        // bool mediumPunch = Input.GetKeyDown(KeyCode.I);
-        // bool heavyPunch = Input.GetKeyDown(KeyCode.O);
-        // bool lightKick = Input.GetKeyDown(KeyCode.J);
-        // bool mediumKick = Input.GetKeyDown(KeyCode.K);
-        // bool heavyKick = Input.GetKeyDown(KeyCode.L);
-        // bool down = Input.GetKeyDown(KeyCode.S);
-        // bool previousFacing = isFacingRight;
+        if (!MenuPausa.isPaused) {
+            bool isMovingForwards;
+            bool isMovingBackwards;
+            bool isJumping = Input.GetKey(KeyCode.W);
+            bool lightPunch = Input.GetKeyDown(KeyCode.U);
+            bool mediumPunch = Input.GetKeyDown(KeyCode.I);
+            bool heavyPunch = Input.GetKeyDown(KeyCode.O);
+            bool lightKick = Input.GetKeyDown(KeyCode.J);
+            bool mediumKick = Input.GetKeyDown(KeyCode.K);
+            bool heavyKick = Input.GetKeyDown(KeyCode.L);
+            bool down = Input.GetKeyDown(KeyCode.S);
+            bool previousFacing = isFacingRight;
 
-        // if (inputIndex == InputBufferSize) {
-        //     inputIndex = 0;
-        // }
+            if (inputIndex == InputBufferSize) {
+                inputIndex = 0;
+            }
 
-        // if (isFacingRight) {
-        //     isMovingForwards = Input.GetKey(KeyCode.D);
-        //     isMovingBackwards = Input.GetKey(KeyCode.A);
-        // } else {
-        //     isMovingForwards = Input.GetKey(KeyCode.A);
-        //     isMovingBackwards = Input.GetKey(KeyCode.D);
-        // }
+            if (isFacingRight) {
+                isMovingForwards = Input.GetKey(KeyCode.D);
+                isMovingBackwards = Input.GetKey(KeyCode.A);
+            } else {
+                isMovingForwards = Input.GetKey(KeyCode.A);
+                isMovingBackwards = Input.GetKey(KeyCode.D);
+            }
 
-        // animator.SetBool("Forward pressed", isMovingForwards);
-        // animator.SetBool("Back pressed", isMovingBackwards);
-        // animator.SetBool("Up pressed", isJumping);
+            animator.SetBool("Forward pressed", isMovingForwards);
+            animator.SetBool("Back pressed", isMovingBackwards);
+            animator.SetBool("Up pressed", isJumping);
 
-        // if (Time.time - lastInputTime > inputTimeout) {
-        //     inputIndex = 0;
-        // }
+            if (Time.time - lastInputTime > inputTimeout) {
+                inputIndex = 0;
+            }
 
-        // if (inputIndex < InputBufferSize) {
-        //     if (isJumping) {
-        //         inputBuffer[inputIndex] = KeyCode.W;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+            if (inputIndex < InputBufferSize) {
+                if (isJumping) {
+                    inputBuffer[inputIndex] = KeyCode.W;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (Input.GetKeyDown(KeyCode.A)) {
-        //         inputBuffer[inputIndex] = KeyCode.A;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+                if (Input.GetKeyDown(KeyCode.A)) {
+                    inputBuffer[inputIndex] = KeyCode.A;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (Input.GetKeyDown(KeyCode.D)) {
-        //         inputBuffer[inputIndex] = KeyCode.D;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+                if (Input.GetKeyDown(KeyCode.D)) {
+                    inputBuffer[inputIndex] = KeyCode.D;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (down) {
-        //         inputBuffer[inputIndex] = KeyCode.S;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+                if (down) {
+                    inputBuffer[inputIndex] = KeyCode.S;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (lightPunch) {
-        //         inputBuffer[inputIndex] = KeyCode.U;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+                if (lightPunch) {
+                    inputBuffer[inputIndex] = KeyCode.U;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (mediumPunch) {
-        //         inputBuffer[inputIndex] = KeyCode.I;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+                if (mediumPunch) {
+                    inputBuffer[inputIndex] = KeyCode.I;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (heavyPunch) {
-        //         inputBuffer[inputIndex] = KeyCode.O;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+                if (heavyPunch) {
+                    inputBuffer[inputIndex] = KeyCode.O;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (lightKick) {
-        //         inputBuffer[inputIndex] = KeyCode.J;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+                if (lightKick) {
+                    inputBuffer[inputIndex] = KeyCode.J;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (mediumKick) {
-        //         inputBuffer[inputIndex] = KeyCode.K;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
+                if (mediumKick) {
+                    inputBuffer[inputIndex] = KeyCode.K;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
 
-        //     if (heavyKick) {
-        //         inputBuffer[inputIndex] = KeyCode.L;
-        //         inputIndex++;
-        //         lastInputTime = Time.time;
-        //     }
-        // }
+                if (heavyKick) {
+                    inputBuffer[inputIndex] = KeyCode.L;
+                    inputIndex++;
+                    lastInputTime = Time.time;
+                }
+            }
 
-        // if (isFacingRight) {
-        //     if (ContainsInput(lightAxeKickF)) {
-        //         TriggerOgreAxeKick();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+            if (isFacingRight) {
+                if (ContainsInput(lightAxeKickF)) {
+                    TriggerOgreAxeKick();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(mediumAxeKickF)) {
-        //         TriggerOgreAxeKick();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(mediumAxeKickF)) {
+                    TriggerOgreAxeKick();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(heavyAxeKickF)) {
-        //         TriggerOgreAxeKick();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(heavyAxeKickF)) {
+                    TriggerOgreAxeKick();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(lightUppercutF)) {
-        //         TriggerOgreUppercut();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(lightUppercutF)) {
+                    TriggerOgreUppercut();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(mediumUppercutF)) {
-        //         TriggerOgreUppercut();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(mediumUppercutF)) {
+                    TriggerOgreUppercut();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(heavyUppercutF)) {
-        //         TriggerOgreUppercut();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(heavyUppercutF)) {
+                    TriggerOgreUppercut();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(lightShaoriF)) {
-        //         TriggerOgreShaori();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(lightShaoriF)) {
+                    TriggerOgreShaori();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(mediumShaoriF)) {
-        //         TriggerOgreShaori();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(mediumShaoriF)) {
+                    TriggerOgreShaori();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(heavyShaoriF)) {
-        //         TriggerOgreShaori();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(heavyShaoriF)) {
+                    TriggerOgreShaori();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(lightHugOfDeathF)) {
-        //         TriggerHugOfDeath();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(lightHugOfDeathF)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(mediumHugOfDeathF)) {
-        //         TriggerHugOfDeath();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(mediumHugOfDeathF)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(heavyHugOfDeathF)) {
-        //         TriggerHugOfDeath();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
-        // } else {
-        //     if (ContainsInput(lightAxeKickB)) {
-        //         TriggerOgreAxeKick();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(heavyHugOfDeathF)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+            } else {
+                if (ContainsInput(lightAxeKickB)) {
+                    TriggerOgreAxeKick();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(mediumAxeKickB)) {
-        //         TriggerOgreAxeKick();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(mediumAxeKickB)) {
+                    TriggerOgreAxeKick();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(heavyAxeKickB)) {
-        //         TriggerOgreAxeKick();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(heavyAxeKickB)) {
+                    TriggerOgreAxeKick();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(lightUppercutB)) {
-        //         TriggerOgreUppercut();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(lightUppercutB)) {
+                    TriggerOgreUppercut();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(mediumUppercutB)) {
-        //         TriggerOgreUppercut();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(mediumUppercutB)) {
+                    TriggerOgreUppercut();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(heavyUppercutB)) {
-        //         TriggerOgreUppercut();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(heavyUppercutB)) {
+                    TriggerOgreUppercut();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(lightShaoriB)) {
-        //         TriggerOgreShaori();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(lightShaoriB)) {
+                    TriggerOgreShaori();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(mediumShaoriB)) {
-        //         TriggerOgreShaori();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(mediumShaoriB)) {
+                    TriggerOgreShaori();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(heavyShaoriB)) {
-        //         TriggerOgreShaori();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(heavyShaoriB)) {
+                    TriggerOgreShaori();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(lightHugOfDeathB)) {
-        //         TriggerHugOfDeath();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(lightHugOfDeathB)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(mediumHugOfDeathB)) {
-        //         TriggerHugOfDeath();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
+                if (ContainsInput(mediumHugOfDeathB)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
 
-        //     if (ContainsInput(heavyHugOfDeathB)) {
-        //         TriggerHugOfDeath();
-        //         inputBuffer = new KeyCode[InputBufferSize];
-        //         inputIndex = 0;
-        //     }
-        // }
+                if (ContainsInput(heavyHugOfDeathB)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+            }
 
-        // if (lightPunch) {
-        //     animator.SetTrigger("LightPunchTrigger");
-        // }
+            if (lightPunch) {
+                animator.SetTrigger("LightPunchTrigger");
+            }
 
-        // if (mediumPunch) {
-        //     animator.SetTrigger("MediumPunchTrigger");
-        // }
+            if (mediumPunch) {
+                animator.SetTrigger("MediumPunchTrigger");
+            }
 
-        // if (heavyPunch) {
-        //     animator.SetTrigger("HeavyPunchTrigger");
-        // }
+            if (heavyPunch) {
+                animator.SetTrigger("HeavyPunchTrigger");
+            }
 
-        // if (lightKick) {
-        //     animator.SetTrigger("LightKickTrigger");
-        // }
+            if (lightKick) {
+                animator.SetTrigger("LightKickTrigger");
+            }
 
-        // if (mediumKick) {
-        //     animator.SetTrigger("MediumKickTrigger");
-        // }
+            if (mediumKick) {
+                animator.SetTrigger("MediumKickTrigger");
+            }
 
-        // if (heavyKick) {
-        //     animator.SetTrigger("HeavyKickTrigger");
-        // }
+            if (heavyKick) {
+                animator.SetTrigger("HeavyKickTrigger");
+            }
 
-        // isFacingRight = IsFacingRight();
+            isFacingRight = IsFacingRight();
 
-        // if (isFacingRight != previousFacing) {
-        //     FlipCharacter();
-        // }
+            if (isFacingRight != previousFacing) {
+                FlipCharacter();
+            }
+
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle")) {
+                BakiController.golpeInt = 0;
+            }
+        }
     }
 
     void TriggerOgreAxeKick() {
