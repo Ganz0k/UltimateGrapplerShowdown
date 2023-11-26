@@ -4,6 +4,8 @@ using System.Linq;
 
 public class BakiController : MonoBehaviour {
     
+    public ParticleSystem hitEffect;
+    public ParticleSystem blockEffect;
     public Animator animator;
     private const int InputBufferSize = 10;
     private KeyCode[] inputBuffer = new KeyCode[InputBufferSize];
@@ -131,14 +133,6 @@ public class BakiController : MonoBehaviour {
 
     public Transform opponent;
     public Transform personaje;
-    public Collider opponentLeftElbowHitbox;
-    public Collider opponentRightElbowHitbox;
-    public Collider opponentLeftFistHitbox;
-    public Collider opponentRightFistHitbox;
-    public Collider opponentLeftKneeHitbox;
-    public Collider opponentRightKneeHitbox;
-    public Collider opponentLeftFootHitbox;
-    public Collider opponentRightFootHitbox;
     public AudioSource audioSource {
         get {
             return GetComponent<AudioSource>();
@@ -155,6 +149,9 @@ public class BakiController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (!MenuPausa.isPaused) {
+            if (Input.GetKeyDown(KeyCode.P)) {
+                animator.SetTrigger("LightPunchTrigger");
+            }
             // bool isMovingForwards;
             // bool isMovingBackwards;
             // bool isJumping = Input.GetKey(KeyCode.W);
@@ -250,6 +247,24 @@ public class BakiController : MonoBehaviour {
             // }
 
             // if (isFacingLeft) {
+            //     if (ContainsInput(lightTriceratopsB)) {
+            //         TriggerTriceratopsFist();
+            //         inputBuffer = new KeyCode[InputBufferSize];
+            //         inputIndex = 0;
+            //     }
+
+            //     if (ContainsInput(mediumTriceratopsB)) {
+            //         TriggerTriceratopsFist();
+            //         inputBuffer = new KeyCode[InputBufferSize];
+            //         inputIndex = 0;
+            //     }
+
+            //     if (ContainsInput(heavyTriceratopsB)) {
+            //         TriggerTriceratopsFist();
+            //         inputBuffer = new KeyCode[InputBufferSize];
+            //         inputIndex = 0;
+            //     }
+
             //     if (ContainsInput(lightCockroachDashB)) {
             //         TriggerCockroachDash();
             //         inputBuffer = new KeyCode[InputBufferSize];
@@ -284,26 +299,26 @@ public class BakiController : MonoBehaviour {
             //         TriggerWhipStrike();
             //         inputBuffer = new KeyCode[InputBufferSize];
             //         inputIndex = 0;
-            //     }
-
-            //     if (ContainsInput(lightTriceratopsB)) {
-            //         TriggerTriceratopsFist();
-            //         inputBuffer = new KeyCode[InputBufferSize];
-            //         inputIndex = 0;
-            //     }
-
-            //     if (ContainsInput(mediumTriceratopsB)) {
-            //         TriggerTriceratopsFist();
-            //         inputBuffer = new KeyCode[InputBufferSize];
-            //         inputIndex = 0;
-            //     }
-
-            //     if (ContainsInput(heavyTriceratopsB)) {
-            //         TriggerTriceratopsFist();
-            //         inputBuffer = new KeyCode[InputBufferSize];
-            //         inputIndex = 0;
-            //     }
+            //     }                
             // } else {
+            //     if (ContainsInput(lightTriceratopsF)) {
+            //         TriggerTriceratopsFist();
+            //         inputBuffer = new KeyCode[InputBufferSize];
+            //         inputIndex = 0;
+            //     }
+
+            //     if (ContainsInput(mediumTriceratopsF)) {
+            //         TriggerTriceratopsFist();
+            //         inputBuffer = new KeyCode[InputBufferSize];
+            //         inputIndex = 0;
+            //     }
+
+            //     if (ContainsInput(heavyTriceratopsF)) {
+            //         TriggerTriceratopsFist();
+            //         inputBuffer = new KeyCode[InputBufferSize];
+            //         inputIndex = 0;
+            //     }
+
             //     if (ContainsInput(lightCockroachDashF)) {
             //         TriggerCockroachDash();
             //         inputBuffer = new KeyCode[InputBufferSize];
@@ -336,24 +351,6 @@ public class BakiController : MonoBehaviour {
 
             //     if (ContainsInput(heavyWhipStrikeF)) {
             //         TriggerWhipStrike();
-            //         inputBuffer = new KeyCode[InputBufferSize];
-            //         inputIndex = 0;
-            //     }
-
-            //     if (ContainsInput(lightTriceratopsF)) {
-            //         TriggerTriceratopsFist();
-            //         inputBuffer = new KeyCode[InputBufferSize];
-            //         inputIndex = 0;
-            //     }
-
-            //     if (ContainsInput(mediumTriceratopsF)) {
-            //         TriggerTriceratopsFist();
-            //         inputBuffer = new KeyCode[InputBufferSize];
-            //         inputIndex = 0;
-            //     }
-
-            //     if (ContainsInput(heavyTriceratopsF)) {
-            //         TriggerTriceratopsFist();
             //         inputBuffer = new KeyCode[InputBufferSize];
             //         inputIndex = 0;
             //     }
@@ -466,27 +463,36 @@ public class BakiController : MonoBehaviour {
         Animator opponentAnimator = opponent.GetComponent<Animator>();
         AnimatorStateInfo currentOpponentState = opponentAnimator.GetCurrentAnimatorStateInfo(0);
 
-        if (other == opponentLeftElbowHitbox || other == opponentLeftFistHitbox ||
-            other == opponentRightElbowHitbox || other == opponentRightFistHitbox || other == opponentLeftKneeHitbox ||
-            other == opponentLeftFootHitbox || other == opponentRightKneeHitbox || other == opponentRightFootHitbox) {
+        if (other.CompareTag("Hitbox")) {
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk backwards")) {
                 TriggerBlock();
+                blockEffect.Play();
             } else if (currentOpponentState.IsName("Ogre axe kick") || currentOpponentState.IsName("Ogre uppercut") || currentOpponentState.IsName("Ogre shaori followup")) {
-                TriggerKnockdown();
-                
                 if (golpeInt == 0) {
+                    TriggerKnockdown();
+                    hitEffect.Play();
                     audioSource.PlayOneShot(golpe);
                     golpeInt++;
                 }
             } else if (currentOpponentState.IsName("Light punch") || currentOpponentState.IsName("Medium punch") ||
                 currentOpponentState.IsName("Heavy punch") || currentOpponentState.IsName("Light kick") ||
-                currentOpponentState.IsName("Medium kick") || currentOpponentState.IsName("Heavy kick")) {
+                currentOpponentState.IsName("Medium kick") || currentOpponentState.IsName("Heavy kick") ||
+                currentOpponentState.IsName("Hug of death activation")) {
+                if (golpeInt == 0) {
+                    TriggerHurt();
+                    hitEffect.Play();
+                    audioSource.PlayOneShot(golpe);
+                    golpeInt++;
+                }
+            } else if (currentOpponentState.IsName("Hug of death followup")) {
                 TriggerHurt();
+                hitEffect.Play();
 
                 if (golpeInt == 0) {
                     audioSource.PlayOneShot(golpe);
                     golpeInt++;
                 }
+                TriggerKnockdown();
             }
         }
     }

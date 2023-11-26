@@ -4,6 +4,8 @@ using System.Linq;
 
 public class YujiroController : MonoBehaviour {
     
+    public ParticleSystem hitEffect;
+    public ParticleSystem blockEffect;
     public Animator animator;
     private const int InputBufferSize = 10;
     private KeyCode[] inputBuffer = new KeyCode[InputBufferSize];
@@ -158,19 +160,17 @@ public class YujiroController : MonoBehaviour {
 
     public Transform opponent;
     public Transform personaje;
-    public Collider opponentheadHitbox;
-    public Collider opponentLeftElbowHitbox;
-    public Collider opponentRightElbowHitbox;
-    public Collider opponentLeftFistHitbox;
-    public Collider opponentRightFistHitbox;
-    public Collider opponentLeftKneeHitbox;
-    public Collider opponentRightKneeHitbox;
-    public Collider opponentLeftFootHitbox;
-    public Collider opponentRightFootHitbox;
+    public AudioSource audioSource {
+        get {
+            return GetComponent<AudioSource>();
+        }
+    }
+    public AudioClip golpe;
+    public static int golpeInt = 0;
 
     // Start is called before the first frame update
     void Start() {
-        
+        gameObject.AddComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -271,6 +271,24 @@ public class YujiroController : MonoBehaviour {
             }
 
             if (isFacingRight) {
+                if (ContainsInput(lightHugOfDeathF)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(mediumHugOfDeathF)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(heavyHugOfDeathF)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
                 if (ContainsInput(lightAxeKickF)) {
                     TriggerOgreAxeKick();
                     inputBuffer = new KeyCode[InputBufferSize];
@@ -324,25 +342,25 @@ public class YujiroController : MonoBehaviour {
                     inputBuffer = new KeyCode[InputBufferSize];
                     inputIndex = 0;
                 }
-
-                if (ContainsInput(lightHugOfDeathF)) {
-                    TriggerHugOfDeath();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                    inputIndex = 0;
-                }
-
-                if (ContainsInput(mediumHugOfDeathF)) {
-                    TriggerHugOfDeath();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                    inputIndex = 0;
-                }
-
-                if (ContainsInput(heavyHugOfDeathF)) {
-                    TriggerHugOfDeath();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                    inputIndex = 0;
-                }
             } else {
+                if (ContainsInput(lightHugOfDeathB)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(mediumHugOfDeathB)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
+                if (ContainsInput(heavyHugOfDeathB)) {
+                    TriggerHugOfDeath();
+                    inputBuffer = new KeyCode[InputBufferSize];
+                    inputIndex = 0;
+                }
+
                 if (ContainsInput(lightAxeKickB)) {
                     TriggerOgreAxeKick();
                     inputBuffer = new KeyCode[InputBufferSize];
@@ -393,24 +411,6 @@ public class YujiroController : MonoBehaviour {
 
                 if (ContainsInput(heavyShaoriB)) {
                     TriggerOgreShaori();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                    inputIndex = 0;
-                }
-
-                if (ContainsInput(lightHugOfDeathB)) {
-                    TriggerHugOfDeath();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                    inputIndex = 0;
-                }
-
-                if (ContainsInput(mediumHugOfDeathB)) {
-                    TriggerHugOfDeath();
-                    inputBuffer = new KeyCode[InputBufferSize];
-                    inputIndex = 0;
-                }
-
-                if (ContainsInput(heavyHugOfDeathB)) {
-                    TriggerHugOfDeath();
                     inputBuffer = new KeyCode[InputBufferSize];
                     inputIndex = 0;
                 }
@@ -509,24 +509,45 @@ public class YujiroController : MonoBehaviour {
         personaje.Rotate(0, 180, 0);
     }
     
-    private void OnTriggerEnter(Collider other) {
+    void OnTriggerEnter(Collider other) {
         Animator opponentAnimator = opponent.GetComponent<Animator>();
         AnimatorStateInfo currentOpponentState = opponentAnimator.GetCurrentAnimatorStateInfo(0);
 
-        if (other == opponentheadHitbox || other == opponentLeftElbowHitbox || other == opponentLeftFistHitbox ||
-            other == opponentRightElbowHitbox || other == opponentRightFistHitbox || other == opponentLeftKneeHitbox ||
-            other == opponentLeftFootHitbox || other == opponentRightKneeHitbox || other == opponentRightFootHitbox) {
+        if (other.CompareTag("Hitbox")) {
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk back")) {
                 TriggerBlock();
-            } else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Ogre shaori stance")) {
-                TriggerOgreShaoriFollowup();
+                blockEffect.Play();
             } else if (currentOpponentState.IsName("Cockroach dash") || currentOpponentState.IsName("Whip strike")) {
-                TriggerKnockdown();
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Ogre shaori stance")) {
+                    TriggerOgreShaoriFollowup();
+                } else {
+                    TriggerKnockdown();
+                    hitEffect.Play();
+                    
+                    if (golpeInt == 0) {
+                        audioSource.PlayOneShot(golpe);
+                        golpeInt++;
+                    }
+                }
             } else if (currentOpponentState.IsName("Light punch") || currentOpponentState.IsName("Medium punch") ||
                 currentOpponentState.IsName("Heavy punch") || currentOpponentState.IsName("Light kick") ||
                 currentOpponentState.IsName("Medium kick") || currentOpponentState.IsName("Heavy kick")) {
-                TriggerHurt();
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Ogre shaori stance")) {
+                    TriggerOgreShaoriFollowup();
+                } else {
+                    TriggerHurt();
+                    hitEffect.Play();
+
+                    if (golpeInt == 0) {
+                        audioSource.PlayOneShot(golpe);
+                        golpeInt++;
+                    }
+                }
             }
-        }        
+        }
+
+        if (other.CompareTag("Hurtbox") && animator.GetCurrentAnimatorStateInfo(0).IsName("Hug of death activation")) {
+            TriggerHugOfDeathFollowup();
+        }
     }
 }
