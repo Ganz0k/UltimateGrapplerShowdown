@@ -26,7 +26,7 @@ public class OpponentSelect : CharacterSelectManager {
             SceneManager.LoadScene(toWhichScene);
         }
 
-        if (Input.GetKeyDown(KeyCode.A)) {
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             if (characterSelectState == 0) {
                 return;
             }
@@ -36,7 +36,7 @@ public class OpponentSelect : CharacterSelectManager {
             CharacterSelectManager();
         }
 
-        if (Input.GetKeyDown(KeyCode.D)) {
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
             if (characterSelectState == 1) {
                 return;
             }

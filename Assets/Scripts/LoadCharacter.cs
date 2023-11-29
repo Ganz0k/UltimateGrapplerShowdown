@@ -16,12 +16,22 @@ public class LoadCharacter : MonoBehaviour {
             playerCharacter = Instantiate(Resources.Load("Baki")) as GameObject;
         }
 
-        if (CharacterSelectManager._yujiroOpponent) {
-            opponentCharacter = Instantiate(Resources.Load("YujiroOpponent")) as GameObject;
-        }
+        if (CharacterSelectManager.players == 2) {
+            if (CharacterSelectManager._yujiroOpponent) {
+                opponentCharacter = Instantiate(Resources.Load("YujiroPlayer2")) as GameObject;
+            }
 
-        if (CharacterSelectManager._bakiOpponent) {
-            opponentCharacter = Instantiate(Resources.Load("BakiOpponent")) as GameObject;
+            if (CharacterSelectManager._bakiOpponent) {
+                opponentCharacter = Instantiate(Resources.Load("BakiPlayer2")) as GameObject;
+            }
+        } else {
+            if (CharacterSelectManager._yujiroOpponent) {
+                opponentCharacter = Instantiate(Resources.Load("YujiroOpponent")) as GameObject;
+            }
+
+            if (CharacterSelectManager._bakiOpponent) {
+                opponentCharacter = Instantiate(Resources.Load("BakiOpponent")) as GameObject;
+            }
         }
 
         camaraPelea.target1 = playerCharacter.transform;

@@ -9,6 +9,7 @@ public class CharacterSelectManager : MonoBehaviour {
     public static bool _yujiroOpponent;
     public static bool _bakiOpponent;
     public static string toWhichScene;
+    public static int players;
 
     void Awake() {
         _yujiroHanma = false;

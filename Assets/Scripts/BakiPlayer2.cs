@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class BakiController : MonoBehaviour {
+public class BakiPlayer2 : MonoBehaviour {
     
     public ParticleSystem hitEffect;
     public ParticleSystem blockEffect;
@@ -10,124 +10,124 @@ public class BakiController : MonoBehaviour {
     private const int InputBufferSize = 10;
     private KeyCode[] inputBuffer = new KeyCode[InputBufferSize];
     private int inputIndex = 0;
-    private bool isFacingRight = true;
+    private bool isFacingLeft = true;
     private float inputTimeout = 0.5f;
     private KeyCode[] lightCockroachDashF = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.J
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad1
     };
     private KeyCode[] mediumCockroachDashF = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.K
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad2
     };
     private KeyCode[] heavyCockroachDashF = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.L
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad3
     };
     private KeyCode[] lightCockroachDashB = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.J
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad1
     };
     private KeyCode[] mediumCockroachDashB = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.K
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad2
     };
     private KeyCode[] heavyCockroachDashB = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.L
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad3
     };
     private KeyCode[] lightWhipStrikeF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.U
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad4
     };
     private KeyCode[] mediumWhipStrikeF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.I
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad5
     };
     private KeyCode[] heavyWhipStrikeF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.O
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad6
     };
     private KeyCode[] lightWhipStrikeB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.U
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad4
     };
     private KeyCode[] mediumWhipStrikeB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.I
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad5
     };
     private KeyCode[] heavyWhipStrikeB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.O
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad6
     };
     private KeyCode[] lightDemonBack = {
-        KeyCode.S,
-        KeyCode.S,
-        KeyCode.U
+        KeyCode.DownArrow,
+        KeyCode.DownArrow,
+        KeyCode.Keypad4
     };
     private KeyCode[] mediumDemonBack = {
-        KeyCode.S,
-        KeyCode.S,
-        KeyCode.I
+        KeyCode.DownArrow,
+        KeyCode.DownArrow,
+        KeyCode.Keypad5
     };
     private KeyCode[] heavyDemonBack = {
-        KeyCode.S,
-        KeyCode.S,
-        KeyCode.O
+        KeyCode.DownArrow,
+        KeyCode.DownArrow,
+        KeyCode.Keypad6
     };
     private KeyCode[] lightTriceratopsF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.U
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad4
     };
     private KeyCode[] mediumTriceratopsF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.I
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad5
     };
     private KeyCode[] heavyTriceratopsF = {
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.S,
-        KeyCode.D,
-        KeyCode.O
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.DownArrow,
+        KeyCode.RightArrow,
+        KeyCode.Keypad6
     };
     private KeyCode[] lightTriceratopsB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.U
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad4
     };
     private KeyCode[] mediumTriceratopsB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.I
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad5
     };
     private KeyCode[] heavyTriceratopsB = {
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.S,
-        KeyCode.A,
-        KeyCode.O
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+        KeyCode.Keypad6
     };
     private float lastInputTime;
 
@@ -145,7 +145,7 @@ public class BakiController : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         gameObject.AddComponent<AudioSource>();
-        opponent = GameObject.FindGameObjectWithTag("Opponent").GetComponent<Transform>();
+        opponent = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -153,26 +153,26 @@ public class BakiController : MonoBehaviour {
         if (!MenuPausa.isPaused) {
             bool isMovingForwards;
             bool isMovingBackwards;
-            bool isJumping = Input.GetKey(KeyCode.W);
-            bool down = Input.GetKeyDown(KeyCode.S);
-            bool lightPunch = Input.GetKeyDown(KeyCode.U);
-            bool mediumPunch = Input.GetKeyDown(KeyCode.I);
-            bool heavyPunch = Input.GetKeyDown(KeyCode.O);
-            bool lightKick = Input.GetKeyDown(KeyCode.J);
-            bool mediumKick = Input.GetKeyDown(KeyCode.K);
-            bool heavyKick = Input.GetKeyDown(KeyCode.L);
-            bool previousFacing = isFacingRight;
+            bool isJumping = Input.GetKey(KeyCode.UpArrow);
+            bool down = Input.GetKeyDown(KeyCode.DownArrow);
+            bool lightPunch = Input.GetKeyDown(KeyCode.Keypad4);
+            bool mediumPunch = Input.GetKeyDown(KeyCode.Keypad5);
+            bool heavyPunch = Input.GetKeyDown(KeyCode.Keypad6);
+            bool lightKick = Input.GetKeyDown(KeyCode.Keypad1);
+            bool mediumKick = Input.GetKeyDown(KeyCode.Keypad2);
+            bool heavyKick = Input.GetKeyDown(KeyCode.Keypad3);
+            bool previousFacing = isFacingLeft;
 
             if (inputIndex == InputBufferSize) {
                 inputIndex = 0;
             }
 
-            if (!isFacingRight) {
-                isMovingForwards = Input.GetKey(KeyCode.A);
-                isMovingBackwards = Input.GetKey(KeyCode.D);
+            if (isFacingLeft) {
+                isMovingForwards = Input.GetKey(KeyCode.LeftArrow);
+                isMovingBackwards = Input.GetKey(KeyCode.RightArrow);
             } else {
-                isMovingForwards = Input.GetKey(KeyCode.D);
-                isMovingBackwards = Input.GetKey(KeyCode.A);
+                isMovingForwards = Input.GetKey(KeyCode.RightArrow);
+                isMovingBackwards = Input.GetKey(KeyCode.LeftArrow);
             }
 
             animator.SetBool("Forward pressed", isMovingForwards);
@@ -184,68 +184,68 @@ public class BakiController : MonoBehaviour {
             }
 
             if (inputIndex < InputBufferSize) {
-                if (Input.GetKeyDown(KeyCode.W)) {
-                    inputBuffer[inputIndex] = KeyCode.W;
+                if (Input.GetKeyDown(KeyCode.UpArrow)) {
+                    inputBuffer[inputIndex] = KeyCode.UpArrow;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
-                if (Input.GetKeyDown(KeyCode.D)) {
-                    inputBuffer[inputIndex] = KeyCode.D;
+                if (Input.GetKeyDown(KeyCode.RightArrow)) {
+                    inputBuffer[inputIndex] = KeyCode.RightArrow;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
-                if (Input.GetKeyDown(KeyCode.A)) {
-                    inputBuffer[inputIndex] = KeyCode.A;
+                if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+                    inputBuffer[inputIndex] = KeyCode.LeftArrow;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
                 if (down) {
-                    inputBuffer[inputIndex] = KeyCode.S;
+                    inputBuffer[inputIndex] = KeyCode.DownArrow;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
                 if (lightPunch) {
-                    inputBuffer[inputIndex] = KeyCode.U;
+                    inputBuffer[inputIndex] = KeyCode.Keypad4;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
                 if (mediumPunch) {
-                    inputBuffer[inputIndex] = KeyCode.I;
+                    inputBuffer[inputIndex] = KeyCode.Keypad5;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
                 if (heavyPunch) {
-                    inputBuffer[inputIndex] = KeyCode.O;
+                    inputBuffer[inputIndex] = KeyCode.Keypad6;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
                 if (lightKick) {
-                    inputBuffer[inputIndex] = KeyCode.J;
+                    inputBuffer[inputIndex] = KeyCode.Keypad1;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
                 if (mediumKick) {
-                    inputBuffer[inputIndex] = KeyCode.K;
+                    inputBuffer[inputIndex] = KeyCode.Keypad2;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
 
                 if (heavyKick) {
-                    inputBuffer[inputIndex] = KeyCode.L;
+                    inputBuffer[inputIndex] = KeyCode.Keypad3;
                     inputIndex++;
                     lastInputTime = Time.time;
                 }
             }
 
-            if (!isFacingRight) {
+            if (isFacingLeft) {
                 if (ContainsInput(lightTriceratopsB)) {
                     TriggerTriceratopsFist();
                     inputBuffer = new KeyCode[InputBufferSize];
@@ -397,9 +397,9 @@ public class BakiController : MonoBehaviour {
                 animator.SetTrigger("HeavyKickTrigger");
             }
 
-            isFacingRight = IsFacingLeft();
+            isFacingLeft = IsFacingLeft();
 
-            if (isFacingRight != previousFacing) {
+            if (isFacingLeft != previousFacing) {
                 FlipCharacter();
             }
 
@@ -455,7 +455,7 @@ public class BakiController : MonoBehaviour {
 
     public bool IsFacingLeft() {
         float relativeXPosition = personaje.position.x - opponent.position.x;
-        return relativeXPosition >= 0;
+        return relativeXPosition <= 0;
     }
 
     private void FlipCharacter() {

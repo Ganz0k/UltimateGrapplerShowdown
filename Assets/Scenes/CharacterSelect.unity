@@ -504,6 +504,7 @@ MonoBehaviour:
   characterSelectState: 0
   cycleCharacterButtonPress: {fileID: 8300000, guid: e4b2b8b4abd3a6f4a9e6972bc26ab6f2, type: 3}
   titulo: {fileID: 677446429}
+  descripcion: {fileID: 1229415162}
 --- !u!114 &951046119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -822,10 +823,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 3
     m_MaxSize: 40
     m_Alignment: 7
     m_AlignByGeometry: 0

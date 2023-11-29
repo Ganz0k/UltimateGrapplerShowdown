@@ -12,6 +12,7 @@ public class CharacterSelect : CharacterSelectManager {
     public int characterSelectState;
     public AudioClip cycleCharacterButtonPress;
     public Text titulo;
+    public Text descripcion;
 
     private enum CharacterSelectModels {
         YujiroHanma = 0,
@@ -20,6 +21,10 @@ public class CharacterSelect : CharacterSelectManager {
 
     // Start is called before the first frame update
     void Start() {
+        if (players == 2) {
+            titulo.text = "Selecciona tu personaje (P1)";
+        }
+
         CharacterSelectManager();
     }
 
@@ -27,7 +32,14 @@ public class CharacterSelect : CharacterSelectManager {
     void Update() {
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) {
             Destroy(characterDemo);
-            titulo.text = "Selecciona tu oponente";
+            
+            if (players == 2) {
+                titulo.text = "Selecciona tu personaje (P2)";
+                descripcion.text = "Para ciclar entre los personajes use las flechas izquierda y derecha\nPara seleccionar el personaje use la tecla Enter";
+            } else {
+                titulo.text = "Selecciona tu oponente";
+            }
+            
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<OpponentSelect>().enabled = true;
             this.enabled = false;
         }
