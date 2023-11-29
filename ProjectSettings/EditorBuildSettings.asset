@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UndergroundArena.unity
     guid: 6c73dbcc8840e7e4097574f93d12ce1b
+  - enabled: 1
+    path: Assets/Scenes/CharacterSelect.unity
+    guid: 24fa36b07dd1b604dbb63d6add8fc036
   m_configObjects: {}

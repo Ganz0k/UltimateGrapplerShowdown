@@ -28,4 +28,18 @@ public class Menu : MonoBehaviour {
 	public void Exit() {
         Application.Quit();
     }
+
+    public void SinglePlayer() {
+        SceneManager.LoadScene("CharacterSelect");
+        CharacterSelectManager.toWhichScene = "UndergroundArena";
+        // GameObject.FindGameObjectWithTag("LoadCharacterManager").GetComponent<LoadCharacter>().enabled = true;
+        // GameObject.FindGameObjectWithTag("TrainingCharacterManager").GetComponent<LoadCharacterTraining>().enabled = false;
+    }
+
+    public void Training() {
+        SceneManager.LoadScene("CharacterSelect");
+        CharacterSelectManager.toWhichScene = "TrainingStage";
+        // GameObject.FindGameObjectWithTag("TrainingCharacterManager").GetComponent<LoadCharacterTraining>().enabled = true;
+        // GameObject.FindGameObjectWithTag("LoadCharacterManager").GetComponent<LoadCharacter>().enabled = false;
+    }
 }

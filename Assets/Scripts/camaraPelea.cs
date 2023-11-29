@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class camaraPelea : MonoBehaviour
 {
-    public Transform target1; // Primer GameObject a seguir
-    public Transform target2; // Segundo GameObject a seguir
-    public Vector3 offset;   // Desplazamiento de la cámara
+    public static Transform target1; // Primer GameObject a seguir
+    public static Transform target2; // Segundo GameObject a seguir
+    public Vector3 offset;   // Desplazamiento de la cï¿½mara
 
     [Range(0.1f, 10.0f)]
     public float smoothness = 2.0f; // Suavidad de seguimiento
