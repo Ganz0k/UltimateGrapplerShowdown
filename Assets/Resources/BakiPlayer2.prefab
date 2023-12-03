@@ -601,6 +601,7 @@ GameObject:
   - component: {fileID: 91809759371958298}
   - component: {fileID: 91809759371958309}
   - component: {fileID: -2558118626856581347}
+  - component: {fileID: -7795232542372446627}
   m_Layer: 0
   m_Name: BakiPlayer2
   m_TagString: Opponent
@@ -697,6 +698,19 @@ MonoBehaviour:
   personaje: {fileID: 489930288174703817}
   golpe: {fileID: 8300000, guid: 58a5d36d6b134014ea5623d9802082e2, type: 3}
   bloqueo: {fileID: 8300000, guid: 74198389e177d0948b63ca9a3fb22801, type: 3}
+--- !u!114 &-7795232542372446627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974824452840488563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeb8447ce23a3874d860e8619c4f5809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOpponentDefeated: 0
 --- !u!1 &1081893653707994216
 GameObject:
   m_ObjectHideFlags: 0

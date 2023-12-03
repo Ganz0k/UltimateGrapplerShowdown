@@ -601,6 +601,7 @@ GameObject:
   - component: {fileID: 91809759371958298}
   - component: {fileID: 91809759371958309}
   - component: {fileID: 91809759371958311}
+  - component: {fileID: -8972344894869749383}
   m_Layer: 0
   m_Name: Baki
   m_TagString: Player
@@ -626,7 +627,7 @@ Transform:
   - {fileID: 1867500438374519344}
   - {fileID: 441450841485880997}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!95 &5777196745719447219
 Animator:
@@ -697,6 +698,19 @@ MonoBehaviour:
   personaje: {fileID: 489930288174703817}
   golpe: {fileID: 8300000, guid: 58a5d36d6b134014ea5623d9802082e2, type: 3}
   bloqueo: {fileID: 8300000, guid: 74198389e177d0948b63ca9a3fb22801, type: 3}
+--- !u!114 &-8972344894869749383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974824452840488563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f6206fd01d28c43a109c0d5c6879b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BarraSalud: {fileID: 0}
 --- !u!1 &1081893653707994216
 GameObject:
   m_ObjectHideFlags: 0

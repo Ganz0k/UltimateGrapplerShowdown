@@ -259,7 +259,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 8b35add8965e4104fa75dcc253ace0be, type: 3}
-    m_FontSize: 55
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 5
@@ -270,7 +270,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Lista de Movimientos
+  m_Text: "Lista de Movimientos (Asumiendo que tu personaje est\xE9 viendo hacia
+    la derecha)"
 --- !u!222 &134021222
 CanvasRenderer:
   m_ObjectHideFlags: 0

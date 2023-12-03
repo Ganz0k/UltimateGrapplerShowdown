@@ -15131,6 +15131,7 @@ GameObject:
   - component: {fileID: 8347584189804826168}
   - component: {fileID: 8347584189804826175}
   - component: {fileID: 8347584189804826171}
+  - component: {fileID: -4169135596160885277}
   m_Layer: 0
   m_Name: Yujiro
   m_TagString: Player
@@ -15227,6 +15228,19 @@ MonoBehaviour:
   personaje: {fileID: 8381809044436010350}
   golpe: {fileID: 8300000, guid: 58a5d36d6b134014ea5623d9802082e2, type: 3}
   bloqueo: {fileID: 8300000, guid: 74198389e177d0948b63ca9a3fb22801, type: 3}
+--- !u!114 &-4169135596160885277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9158626497239687124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f6206fd01d28c43a109c0d5c6879b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayerDefeated: 0
 --- !u!1 &9165709666104456152
 GameObject:
   m_ObjectHideFlags: 0

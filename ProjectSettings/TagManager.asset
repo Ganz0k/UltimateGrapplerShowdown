@@ -3,7 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - GOText
+  - P1Health
+  - P1Super
+  - OSuper
+  - OHealth
+  - R1P1
+  - R2P1
+  - R1O
+  - R2O
   layers:
   - Default
   - TransparentFX

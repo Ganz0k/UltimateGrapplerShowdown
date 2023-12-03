@@ -6,7 +6,7 @@ public class YujiroPlayer2 : MonoBehaviour {
     
     public ParticleSystem hitEffect;
     public ParticleSystem blockEffect;
-    public Animator animator;
+    public static Animator animator;
     private const int InputBufferSize = 10;
     private KeyCode[] inputBuffer = new KeyCode[InputBufferSize];
     private int inputIndex = 0;
@@ -172,6 +172,7 @@ public class YujiroPlayer2 : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         gameObject.AddComponent<AudioSource>();
+        animator = gameObject.GetComponent<Animator>();
         opponent = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
@@ -195,11 +196,11 @@ public class YujiroPlayer2 : MonoBehaviour {
             }
 
             if (isFacingLeft) {
-                isMovingForwards = Input.GetKey(KeyCode.RightArrow);
-                isMovingBackwards = Input.GetKey(KeyCode.LeftArrow);
-            } else {
                 isMovingForwards = Input.GetKey(KeyCode.LeftArrow);
                 isMovingBackwards = Input.GetKey(KeyCode.RightArrow);
+            } else {
+                isMovingForwards = Input.GetKey(KeyCode.RightArrow);
+                isMovingBackwards = Input.GetKey(KeyCode.LeftArrow);
             }
 
             animator.SetBool("Forward pressed", isMovingForwards);
@@ -273,19 +274,22 @@ public class YujiroPlayer2 : MonoBehaviour {
             }
 
             if (!isFacingLeft) {
-                if (ContainsInput(lightHugOfDeathF)) {
+                if (ContainsInput(lightHugOfDeathF) && OpponentHealth.superMeter >= 100f) {
+                    OpponentHealth.superMeter = 0;
                     TriggerHugOfDeath();
                     inputBuffer = new KeyCode[InputBufferSize];
                     inputIndex = 0;
                 }
 
-                if (ContainsInput(mediumHugOfDeathF)) {
+                if (ContainsInput(mediumHugOfDeathF) && OpponentHealth.superMeter >= 100f) {
+                    OpponentHealth.superMeter = 0;
                     TriggerHugOfDeath();
                     inputBuffer = new KeyCode[InputBufferSize];
                     inputIndex = 0;
                 }
 
-                if (ContainsInput(heavyHugOfDeathF)) {
+                if (ContainsInput(heavyHugOfDeathF) && OpponentHealth.superMeter >= 100f) {
+                    OpponentHealth.superMeter = 0;
                     TriggerHugOfDeath();
                     inputBuffer = new KeyCode[InputBufferSize];
                     inputIndex = 0;
@@ -345,19 +349,21 @@ public class YujiroPlayer2 : MonoBehaviour {
                     inputIndex = 0;
                 }
             } else {
-                if (ContainsInput(lightHugOfDeathB)) {
+                if (ContainsInput(lightHugOfDeathB) && OpponentHealth.superMeter >= 100f) {
+                    OpponentHealth.superMeter = 0;
                     TriggerHugOfDeath();
                     inputBuffer = new KeyCode[InputBufferSize];
                     inputIndex = 0;
                 }
 
-                if (ContainsInput(mediumHugOfDeathB)) {
+                if (ContainsInput(mediumHugOfDeathB) && OpponentHealth.superMeter >= 100f) {
+                    OpponentHealth.superMeter = 0;
                     TriggerHugOfDeath();
                     inputBuffer = new KeyCode[InputBufferSize];
                     inputIndex = 0;
                 }
 
-                if (ContainsInput(heavyHugOfDeathB)) {
+                if (ContainsInput(heavyHugOfDeathB) && OpponentHealth.superMeter >= 100f) {
                     TriggerHugOfDeath();
                     inputBuffer = new KeyCode[InputBufferSize];
                     inputIndex = 0;
@@ -486,6 +492,18 @@ public class YujiroPlayer2 : MonoBehaviour {
         animator.SetTrigger("KnockdownTrigger");
     }
 
+    public static void FullKOTrigger() {
+        animator.SetTrigger("FullKOTrigger");
+    }
+
+    public static void WinTrigger() {
+        animator.SetTrigger("WinTrigger");
+    }
+
+    public static void IdleTrigger() {
+        animator.SetTrigger("IdleTrigger");
+    }
+
     void TriggerBlock() {
         animator.SetTrigger("BlockTrigger");
     }
@@ -516,16 +534,18 @@ public class YujiroPlayer2 : MonoBehaviour {
         AnimatorStateInfo currentOpponentState = opponentAnimator.GetCurrentAnimatorStateInfo(0);
 
         if (other.CompareTag("Hitbox")) {
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk back")) {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk back") && OpponentHealth.Salud != 0) {
                 TriggerBlock();
                 blockEffect.Play();
 
                 if (golpeInt == 0) {
                     audioSource.PlayOneShot(bloqueo);
                     golpeInt++;
+                    OpponentHealth.RecibirAtaque(2.5f);
+                    PlayerOneHealth.BuildMeter();
                 }
             } else if (currentOpponentState.IsName("Cockroach dash") || currentOpponentState.IsName("Whip strike") ||
-                currentOpponentState.IsName("Ogre axe kick") || currentOpponentState.IsName("Ogre uppercut") || currentOpponentState.IsName("Ogre shaori followup")) {
+                currentOpponentState.IsName("Ogre axe kick") || currentOpponentState.IsName("Ogre uppercut") || currentOpponentState.IsName("Ogre shaori followup") && OpponentHealth.Salud != 0) {
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Ogre shaori stance")) {
                     TriggerOgreShaoriFollowup();
                 } else {
@@ -534,30 +554,41 @@ public class YujiroPlayer2 : MonoBehaviour {
                         hitEffect.Play();
                         audioSource.PlayOneShot(golpe);
                         golpeInt++;
+                        OpponentHealth.RecibirAtaque(25f);
+                        PlayerOneHealth.BuildMeter();
                     }
                 }
             } else if (currentOpponentState.IsName("Light punch") || currentOpponentState.IsName("Medium punch") ||
                 currentOpponentState.IsName("Heavy punch") || currentOpponentState.IsName("Light kick") ||
                 currentOpponentState.IsName("Medium kick") || currentOpponentState.IsName("Heavy kick")) {
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Ogre shaori stance")) {
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Ogre shaori stance") && OpponentHealth.Salud != 0) {
                     TriggerOgreShaoriFollowup();
                 } else {
                     if (golpeInt == 0) {
                         TriggerHurt();
                         hitEffect.Play();
                         audioSource.PlayOneShot(golpe);
+                        PlayerOneHealth.BuildMeter();
                         golpeInt++;
+                        
+                        if (currentOpponentState.IsName("Light punch") || currentOpponentState.IsName("Light kick")) {
+                            OpponentHealth.RecibirAtaque(5f);
+                        } else if (currentOpponentState.IsName("Medium punch") || currentOpponentState.IsName("Medium kick")) {
+                            OpponentHealth.RecibirAtaque(10f);
+                        } else if (currentOpponentState.IsName("Heavy punch") || currentOpponentState.IsName("Heavy kick")) {
+                            OpponentHealth.RecibirAtaque(15f);
+                        }
                     }
                 }
-            } else if (currentOpponentState.IsName("Triceratops fist followup") || currentOpponentState.IsName("Hug of death followup")) {
-                TriggerHurt();
-                hitEffect.Play();
-
+            } else if (currentOpponentState.IsName("Triceratops fist followup") || currentOpponentState.IsName("Hug of death followup") && OpponentHealth.Salud != 0) {
                 if (golpeInt == 0) {
+                    TriggerHurt();
+                    hitEffect.Play();
+                    TriggerKnockdown();
                     audioSource.PlayOneShot(golpe);
                     golpeInt++;
+                    OpponentHealth.RecibirAtaque(50f);
                 }
-                TriggerKnockdown();
             }
         }
 
