@@ -63,16 +63,24 @@ public class Timer : MonoBehaviour {
                     }
                     
                     if (CharacterSelectManager._yujiroOpponent) {
-                        YujiroPlayer2.FullKOTrigger();
+                        if (CharacterSelectManager.players == 2) {
+                            YujiroPlayer2.FullKOTrigger();
+                        } else {
+                            OpponentCharacter.FullKOTrigger();
+                        }
 
-                        if (CharacterSelectManager.players == 2 && CharacterSelectManager._yujiroHanma) {
+                        if (CharacterSelectManager._yujiroHanma) {
                             YujiroController.WinTrigger();
-                        } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiHanma) {
+                        } else if (CharacterSelectManager._bakiHanma) {
                             BakiController.WinTrigger();
                         }
                     } else if (CharacterSelectManager._bakiOpponent) {
-                        BakiPlayer2.FullKOTrigger();
-
+                        if (CharacterSelectManager.players == 2) {
+                            BakiPlayer2.FullKOTrigger();
+                        } else {
+                            OpponentCharacter.FullKOTrigger();
+                        }
+                        
                         if (CharacterSelectManager.players == 2 && CharacterSelectManager._yujiroHanma) {
                             YujiroController.WinTrigger();
                         } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiHanma) {
@@ -96,6 +104,8 @@ public class Timer : MonoBehaviour {
                             YujiroPlayer2.WinTrigger();
                         } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiOpponent) {
                             BakiPlayer2.WinTrigger();
+                        } else {
+                            OpponentCharacter.WinTrigger();
                         }
                     } else if (CharacterSelectManager._bakiHanma) {
                         BakiController.FullKOTrigger();
@@ -104,6 +114,8 @@ public class Timer : MonoBehaviour {
                             YujiroController.WinTrigger();
                         } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiOpponent) {
                             BakiController.WinTrigger();
+                        } else {
+                            OpponentCharacter.WinTrigger();
                         }
                     }
                 }
@@ -135,14 +147,18 @@ public class Timer : MonoBehaviour {
                         YujiroPlayer2.IdleTrigger();
                     } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiOpponent) {
                         BakiPlayer2.IdleTrigger();
+                    } else {
+                        OpponentCharacter.IdleTrigger();
                     }
                 } else if (CharacterSelectManager._bakiHanma) {
                     BakiController.IdleTrigger();
 
                     if (CharacterSelectManager.players == 2 && CharacterSelectManager._yujiroOpponent) {
-                        YujiroController.IdleTrigger();
+                        YujiroPlayer2.IdleTrigger();
                     } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiOpponent) {
-                        BakiController.IdleTrigger();
+                        BakiPlayer2.IdleTrigger();
+                    } else {
+                        OpponentCharacter.IdleTrigger();
                     }
                 }
             }

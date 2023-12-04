@@ -52,15 +52,23 @@ public class OpponentHealth : MonoBehaviour {
 
         if (Salud == 0) {
             if (CharacterSelectManager._yujiroOpponent) {
-                YujiroPlayer2.FullKOTrigger();
-
+                if (CharacterSelectManager.players == 2) {
+                    YujiroPlayer2.FullKOTrigger();
+                } else {
+                    OpponentCharacter.FullKOTrigger();
+                }
+                
                 if (CharacterSelectManager.players == 2 && CharacterSelectManager._yujiroHanma) {
                     YujiroController.WinTrigger();
                 } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiHanma) {
                     BakiController.WinTrigger();
                 }
             } else if (CharacterSelectManager._bakiOpponent) {
-                BakiPlayer2.FullKOTrigger();
+                if (CharacterSelectManager.players == 2) {
+                    BakiPlayer2.FullKOTrigger();
+                } else {
+                    OpponentCharacter.FullKOTrigger();
+                }
 
                 if (CharacterSelectManager.players == 2 && CharacterSelectManager._yujiroHanma) {
                     YujiroController.WinTrigger();

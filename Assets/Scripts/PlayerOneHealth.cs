@@ -56,6 +56,8 @@ public class PlayerOneHealth : MonoBehaviour {
                     YujiroPlayer2.WinTrigger();
                 } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiOpponent) {
                     BakiPlayer2.WinTrigger();
+                } else if (CharacterSelectManager.players == 1) {
+                    OpponentCharacter.WinTrigger();
                 }
             } else if (CharacterSelectManager._bakiHanma) {
                 BakiController.FullKOTrigger();
@@ -64,6 +66,8 @@ public class PlayerOneHealth : MonoBehaviour {
                     YujiroController.WinTrigger();
                 } else if (CharacterSelectManager.players == 2 && CharacterSelectManager._bakiOpponent) {
                     BakiController.WinTrigger();
+                } else if (CharacterSelectManager.players == 1) {
+                    OpponentCharacter.WinTrigger();
                 }
             }
 

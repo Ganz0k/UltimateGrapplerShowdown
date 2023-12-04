@@ -26,24 +26,47 @@ public class OpponentSelect : CharacterSelectManager {
             SceneManager.LoadScene(toWhichScene);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            if (characterSelectState == 0) {
-                return;
+
+        if (players == 1) {
+            if (Input.GetKeyDown(KeyCode.A)) {
+                if (characterSelectState == 0) {
+                    return;
+                }
+
+                GetComponent<AudioSource>().PlayOneShot(cycleCharacterButtonPress);
+                characterSelectState--;
+                CharacterSelectManager();
             }
 
-            GetComponent<AudioSource>().PlayOneShot(cycleCharacterButtonPress);
-            characterSelectState--;
-            CharacterSelectManager();
-        }
+            if (Input.GetKeyDown(KeyCode.D)) {
+                if (characterSelectState == 1) {
+                    return;
+                }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            if (characterSelectState == 1) {
-                return;
+                GetComponent<AudioSource>().PlayOneShot(cycleCharacterButtonPress);
+                characterSelectState++;
+                CharacterSelectManager();
+            }
+        } else {
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+                if (characterSelectState == 0) {
+                    return;
+                }
+
+                GetComponent<AudioSource>().PlayOneShot(cycleCharacterButtonPress);
+                characterSelectState--;
+                CharacterSelectManager();
             }
 
-            GetComponent<AudioSource>().PlayOneShot(cycleCharacterButtonPress);
-            characterSelectState++;
-            CharacterSelectManager();
+            if (Input.GetKeyDown(KeyCode.RightArrow)) {
+                if (characterSelectState == 1) {
+                    return;
+                }
+
+                GetComponent<AudioSource>().PlayOneShot(cycleCharacterButtonPress);
+                characterSelectState++;
+                CharacterSelectManager();
+            }
         }
     }
 

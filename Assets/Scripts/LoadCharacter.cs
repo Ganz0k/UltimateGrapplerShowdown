@@ -8,7 +8,7 @@ public class LoadCharacter : MonoBehaviour {
     private GameObject opponentCharacter;
     // Start is called before the first frame update
     void Start() {
-        if (CharacterSelectManager._yujiroHanma == true) {
+        if (CharacterSelectManager._yujiroHanma) {
             playerCharacter = Instantiate(Resources.Load("Yujiro")) as GameObject;
         }
         
@@ -25,12 +25,22 @@ public class LoadCharacter : MonoBehaviour {
                 opponentCharacter = Instantiate(Resources.Load("BakiPlayer2")) as GameObject;
             }
         } else {
-            if (CharacterSelectManager._yujiroOpponent) {
-                opponentCharacter = Instantiate(Resources.Load("YujiroOpponent")) as GameObject;
-            }
+            if (CharacterSelectManager.toWhichScene == "TrainingStage") {
+                if (CharacterSelectManager._yujiroOpponent) {
+                    opponentCharacter = Instantiate(Resources.Load("YujiroDummy")) as GameObject;
+                }
 
-            if (CharacterSelectManager._bakiOpponent) {
-                opponentCharacter = Instantiate(Resources.Load("BakiOpponent")) as GameObject;
+                if (CharacterSelectManager._bakiOpponent) {
+                    opponentCharacter = Instantiate(Resources.Load("BakiDummy")) as GameObject;
+                }
+            } else {
+                if (CharacterSelectManager._yujiroOpponent) {
+                    opponentCharacter = Instantiate(Resources.Load("YujiroAI")) as GameObject;
+                }
+
+                if (CharacterSelectManager._bakiOpponent) {
+                    opponentCharacter = Instantiate(Resources.Load("BakiAI")) as GameObject;
+                }
             }
         }
 

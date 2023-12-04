@@ -44,5 +44,6 @@ public class Menu : MonoBehaviour {
     public void Training() {
         SceneManager.LoadScene("CharacterSelect");
         CharacterSelectManager.toWhichScene = "TrainingStage";
+        CharacterSelectManager.players = 1;
     }
 }
